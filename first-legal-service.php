@@ -2,8 +2,6 @@
 <!-- language -->
 <html lang="en">
 
-
-<!-- Mirrored from bracketweb.com/firdip-html/service-d-fighting.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 01 Jun 2024 09:52:50 GMT -->
 <head>
     <!-- ========== Meta Tags ========== -->
     <meta charset="UTF-8">
@@ -62,40 +60,6 @@
 
                                 <p class="service-details__text wow fadeInUp" data-wow-delay='350ms'>Nam vel lacus eu nisl bibendum accumsan vitae vitae nibh. Nam nec eros id magna hendrerit sagittis. Nullam sed mi non odio feugiat volutpat sit amet nec elit. Maecenas id hendrerit ipsum.</p>
                             </div>
-
-                            <!-- <div class="service-details__single">
-                                <div class="service-details__single-inner">
-                                    <h3 class="service-details__title">Why Choose Our firdip ?</h3>
-                                    <div class="row gutter-y-30">
-                                        <div class="col-md-6">
-                                            <div class="service-details__inner-item wow fadeInUp " data-wow-delay="300ms">
-                                                <div class="item-icon">
-                                                    <div class="icon">
-                                                        <i class="icon-emergency-1"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="item-content">
-                                                    <h4 class="item__title"><a href="about.html">Dedications Saving Lives</a></h4>
-                                                    <p class="item__dec">Lorem Ipsum is simply dummy typesetting industry.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="service-details__inner-item wow fadeInUp " data-wow-delay="300ms">
-                                                <div class="item-icon">
-                                                    <div class="icon">
-                                                        <i class="icon-handshake-1"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="item-content">
-                                                    <h4 class="item__title"><a href="about.html">24/7 available to save</a></h4>
-                                                    <p class="item__dec">Lorem Ipsum is simply dummy typesetting industry.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>

@@ -8,34 +8,31 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
                             <div class="footer-widget footer-widget--about">
-                                <h2 class="footer-widget__title">About Us</h2>
-                                <p class="footer-widget__text">There are many variations passages <br> of Lorem Ipsum available, but the majority have suffered alteration </p>
-                                <form action="#" data-url="MAILCHIMP_FORM_URL" class="footer-widget__newsletter mc-form">
-                                    <input type="email" name="EMAIL" placeholder="Email">
-                                    <button type="submit" class="icon-right-arrow-angle"></button>
-                                </form>
+                                <img src="assets/images/logo-white-1.png" width="255" alt="firdip logo">
+                                <p class="footer-widget__text"><?= __('We started in 2021, Fair Law Firm Ltd provides legal services and property management solutions in Rwanda. Our expertise ensures clients receive professional support and efficient property management.')?></p>
                             </div>
                         </div>
+                        <!--something-->
                         <div class="col-md-6 col-lg-3">
                             <div class="footer-widget footer-widget--contact">
-                                <h2 class="footer-widget__title">Contact</h2>
+                                <h2 class="footer-widget__title"><?= __('Contact Info')?></h2>
                                 <ul class="list-unstyled footer-widget__contact">
                                     <li class="footer-widget__contact__item">
                                         <div class="footer-widget__contact__icon">
                                             <i class="icon-telephone-call-1"></i>
                                         </div>
                                         <div class="footer-widget__contact__inner">
-                                            <a href="tel:+92-3800-8060" class="footer-widget__contact__text">+25 070-000-0000</a>
-                                            <a href="tel:+21-9555-0114" class="footer-widget__contact__text">+25 070-000-0000</a>
+                                            <a href="tel:+92-3800-8060" class="footer-widget__contact__text">+250788411095</a>
+                                            <a href="tel:+21-9555-0114" class="footer-widget__contact__text">+250784183352</a>
                                         </div>
                                     </li>
                                     <li class="footer-widget__contact__item">
                                         <div class="footer-widget__contact__icon">
-                                            <i class="icon-glove"></i>
+                                        <i class="fa fa-globe" aria-hidden="true"></i>
                                         </div>
                                         <div class="footer-widget__contact__inner">
-                                            <a href="" class="footer-widget__contact__text">example@example.com</a>
-                                            <a href="" class="footer-widget__contact__text">www.website.com</a>
+                                        <a href="" class="footer-widget__contact__text">fairlawfirmltd@gmail.com</a>
+                                        <a href="" class="footer-widget__contact__text">www.website.com</a>
                                         </div>
                                     </li>
                                     <li class="footer-widget__contact__item">
@@ -43,7 +40,7 @@
                                             <i class="icon-pin2"></i>
                                         </div>
                                         <div class="footer-widget__contact__inner">
-                                            <p class="footer-widget__contact__text">6391 Elgin st. delaware <br> new york. usa</p>
+                                            <p class="footer-widget__contact__text">KG 194 St, Kigali <br> Kimironko Near bpr Branch  </p>
                                         </div>
                                     </li>
                                 </ul>
@@ -51,26 +48,26 @@
                         </div>
                         <div class="col-md-6 col-lg-2">
                             <div class="footer-widget footer-widget--link">
-                                <h2 class="footer-widget__title">Quick Links</h2>
+                                <h2 class="footer-widget__title"><?= __('Quick Links')?></h2>
                                 <ul class="list-unstyled footer-widget__links">
-                                    <li class="footer-widget__links__item"><a href="welcome">Home</a></li>
-                                    <li class="footer-widget__links__item"><a href="about-grid">About Us</a></li>
-                                    <li class="footer-widget__links__item"><a href="services-grid">Services</a></li>
-                                    <li class="footer-widget__links__item"><a href="blog-grid-left">Blog</a></li>
-                                    <li class="footer-widget__links__item"><a href="contact">Contact</a></li>
+                                    <li class="footer-widget__links__item"><a href="about_us"><?= __('About')?></a></li>
+                                    <li class="footer-widget__links__item"><a href="legal_services.php"><?= __('Legal Services')?></a></li>
+                                    <li class="footer-widget__links__item"><a href="property_service"><?= __('Property Services')?></a></li>
+                                    <li class="footer-widget__links__item"><a href="manage_property"><?= __('Manage Properties')?></a></li>
+                                    <li class="footer-widget__links__item"><a href="hdjhjs"><?= __('Rental house')?></a></li>
+                                    <li class="footer-widget__links__item"><a href="contact"><?= __('Contact')?></a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-2">
                             <div class="footer-widget footer-widget--link">
-                                <h2 class="footer-widget__title">Links</h2>
-                                <ul class="list-unstyled footer-widget__links">
-                                    <li class="footer-widget__links__item"><a href="welcome">Home</a></li>
-                                    <li class="footer-widget__links__item"><a href="about-grid">About Us</a></li>
-                                    <li class="footer-widget__links__item"><a href="services-grid">Services</a></li>
-                                    <li class="footer-widget__links__item"><a href="blog-grid-left">Blog</a></li>
-                                    <li class="footer-widget__links__item"><a href="contact">Contact</a></li>
-                                </ul>
+                                <h2 class="footer-widget__title"><?= __('Social Media')?></h2>
+                        <div class="topbar-one__social">
+                            <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+                            <a href="https://twitter.com/"><i class="icon-x-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
+                            <a href="https://facebook.com/"><i class="fab fa-linkedin"></i><span class="sr-only">linkedin</span></a>
+                            <a href="https://instagram.com/"><i class="fab fa-instagram"></i><span class="sr-only">instagram</span></a>
+                        </div>
                             </div>
                         </div>
                      
@@ -80,13 +77,13 @@
             <div class="main-footer__bottom">
                 <div class="container">
                     <div class="main-footer__bottom__inner">
-                        <p class="main-footer__copyright"> &copy; Copyright<span class="dynamic-year"></span> || Developed by REMY </p>
+                        <p class="main-footer__copyright"> &copy; <?= __('Copyright')?> <span class="dynamic-year"></span> Fair Law Firm LTD. <?= __('All Rights Reserved')?> </p>
                     </div>
                 </div>
             </div>
         </footer>
 
-    </div><!-- /.page-wrapper -->
+    </div>
 
     <div class="mobile-nav__wrapper">
         <div class="mobile-nav__overlay mobile-nav__toggler"></div>
@@ -96,9 +93,7 @@
 
             <div class="logo-box">
                 <a href="welcome" aria-label="logo image">
-                    <h2>Logo</h2>
-                    <!-- <img src="assets/images/logo-light.png" width="155" alt="firdip logo"> -->
-                    <h2 style="color: white;">Logo</h2>
+                    <img src="assets/images/logo-0-0-0.png" width="155" alt="firdip logo">
                 </a>
             </div>
             <!-- /.logo-box -->
@@ -107,27 +102,45 @@
 
             <ul class="mobile-nav__contact list-unstyled">
                 <li>
+                     <a href="?lang=en">
+                          <img src="assets/images/en.png" alt="English" />
+                     </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <a href="?lang=fr">
+                          <img src="assets/images/fr.png" alt="French" />
+                     </a>
+                </li>
+                <li>
                     <i class="fa fa-envelope"></i>
-                    <a href="mailto:needhelp@firdip.com">example@campany.com</a>
+                    <a href="">fairlawfirmltd@gmail.com</a>
                 </li>
                 <li>
                     <i class="fa fa-phone-alt"></i>
-                    <a href="tel:666-888-0000">+2507 8884 8185</a>
+                    <a href="">+250788411095</a>
+                </li>
+                <li class="topbar-one__info__item">
+                        <i class="fa fa-clock" aria-hidden="true"></i>
+                            <span class="topbar-one__info__item__location" style="color: #000;">Open Hours: Mon - Fri 09:00 - 17:00</span>
                 </li>
             </ul><!-- /.mobile-nav__contact -->
             <div class="mobile-nav__social">
-                <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
-                <a href="https://twitter.com/"><i class="icon-x-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
-                <a href="https://pinterest.com/"><i class="icon-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pinterest</span></a>
-                <a href="https://instagram.com/"><i class="icon-youtube" aria-hidden="true"></i><span class="sr-only">youtube</span></a>
-            </div><!-- /.mobile-nav__social -->
+            <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+            <a href="https://twitter.com/"><i class="icon-x-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
+            <a href="https://instagram.com/"><i class="fab fa-instagram"></i><span class="sr-only">instagram</span></a>
+            <a href="https://facebook.com/"><i class="fab fa-linkedin"></i><span class="sr-only">linkedin</span></a>
+            <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+
+                </div><!-- /.mobile-nav__social -->
         </div>
         <!-- /.mobile-nav__content -->
     </div>
+
+    <!-- <a href="https:/wa.me/+250788411095"  target="_blank" class="whatsapp_float"><i class="fa-brands fa-whatsapp whatsapp-icon"></i></a> -->
+    <a href="https://wa.me/message/CDM47NATCOISH1"  target="_blank" class="whatsapp_float"><i class="fa-brands fa-whatsapp whatsapp-icon"></i></a>
+
  
 
     <a href="#" data-target="html" class="scroll-to-target scroll-to-top">
-        <span class="scroll-to-top__text">back top</span>
+        <span class="scroll-to-top__text"><?= __('back top')?></span>
         <span class="scroll-to-top__wrapper"><span class="scroll-to-top__inner"></span></span>
     </a>
 

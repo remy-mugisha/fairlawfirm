@@ -14,7 +14,11 @@ RewriteCond %{THE_REQUEST} /index\.php[?\s] [NC]
 RewriteRule ^ welcome [R=302,L,NE]
 RewriteRule ^welcome/?$ index.php [L,NC]
 
-
+ErrorDocument 400 http://localhost/edit/404
+ErrorDocument 401 http://localhost/edit/404
+ErrorDocument 403 http://localhost/edit/404
+ErrorDocument 404 http://localhost/edit/404
+ErrorDocument 500 http://localhost/edit/404 
 
 RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
 RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$

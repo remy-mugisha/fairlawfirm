@@ -1,16 +1,17 @@
    
-    <!-- ========== Favicon Icon ========== -->
+    <?php
+    require 'Lang/lang.php';
+    ?>
+    
     <link rel="shortcut icon" href="assets/images/favicons/small-logo.jpg" type="image/x-icon">
     <link rel="manifest" href="assets/images/favicons/site.webmanifest">
 
 
-    <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
 
-    <!-- ===========  All Stylesheet ================= -->
-    <!--  Bootstrap css plugins -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/vendors/bootstrap/css/bootstrap.min.css">
     <!--  bootstrap-select css plugins -->
@@ -50,19 +51,23 @@
                     <ul class="list-unstyled topbar-one__info">
                         <li class="topbar-one__info__item">
                         <i class="fa fa-clock" aria-hidden="true"></i>
-                            <span class="topbar-one__info__item__location">Open Hours: Mon - Fri 09:00 - 17:00</span>
+                            <span class="topbar-one__info__item__location"><?= __('Open Hours')?>: <?= __('Mon')?> - <?= __('Fri')?> 09:00 - 17:00</span>
                         </li>
                         <li class="topbar-one__info__item">
                             <i class="icon-message topbar-one__info__icon"></i>
-                            <a href="mailto:needhelp@company.com">example@company.com</a>
+                            <a href="mailto:#">fairlawfirmltd@gmail.com</a>
+                        </li>
+                        <li class="topbar-one__info__item">
+                        <i class="icon-call"></i>
+                        <a href="mailto:#">+250 788 411 095</a>
                         </li>
                     </ul>
                     <div class="topbar-one__right">
                         <div class="topbar-one__social">
                             <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
                             <a href="https://twitter.com/"><i class="icon-x-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
-                            <a href="https://pinterest.com/"><i class="icon-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pinterest</span></a>
-                            <a href="https://instagram.com/"><i class="icon-youtube" aria-hidden="true"></i><span class="sr-only">youtube</span></a>
+                            <a href="https://facebook.com/"><i class="fab fa-linkedin"></i><span class="sr-only">linkedin</span></a>
+                            <a href="https://instagram.com/"><i class="fab fa-instagram"></i><span class="sr-only">instagram</span></a>
                         </div>
                     </div>
                 </div>
@@ -74,49 +79,50 @@
                 <div class="main-header__inner">
                     <div class="main-header__logo logo-firdip">
                         <a href="welcome">
-                            <!-- <img src="assets/images/logo-light-1-2.jpg" alt="firdip HTML" width="130"> -->
-                            <h2 style="color: white;">Logo</h2>
+                            <img src="assets/images/logo-0-0-0.png" alt="firdip HTML" height="50" width="170">
                         </a>
                     </div>
                     <nav class="main-header__nav main-menu">
                         <ul class="main-menu__list">
 
                             <li>
-                                <a href="welcome">Home</a>
+                                <a href="welcome"><?= __('Home')?></a>
                             </li>
 
 
                             <li>
-                                <a href="about-grid">About</a>
+                                <a href="about_us"><?= __('About')?></a>
                             </li>
                             <li class="dropdown">
-                                <a href="">Service</a>
+                                <a><?= __('Service')?></a>
                                 <ul class="sub-menu">
-                                    <!-- <li><a href="services-grid">Service</a></li> -->
-                                    <li><a href="legal-services.php">Legal Services</a></li>
-                                    <li><a href="services-grid">Properties</a></li>
+                                    <li><a href="legal_services.php"><?= __('Legal Services')?></a></li>
+                                    <li><a href="property_service"><?= __('Property Management')?></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a><?= __('Property')?></a>
+                                <ul class="sub-menu">
+                                    <li><a href="manage_property"><?= __('Manage Properties')?></a></li>
+                                    <li><a href="hdjhjs"><?= __('Rental house')?></a></li>
                                 </ul>
                             </li>
                             <li class="">
-                                <a href="blog-grid-left">Blog</a>
+                                <a href="hdjhjs"><?= __('Blog')?></a>
                             </li>
                             <li>
-                                <a href="contact">Contact</a>
+                                <a href="contact"><?= __('Contact')?></a>
                             </li>
+                            
                         </ul>
                     </nav>
                     <div class="main-header__right">
-                        <!-- <a href="#" class="search-toggler main-header__right__info__item"><i class="icon-search" aria-hidden="true"></i><span class="sr-only">Search</span></a>
-                        <a href="cart.html" class="main-header__right__info__item"><i class="icon-trolley" aria-hidden="true"></i><span class="sr-only">Search</span></a> -->
-                        <a href="tel:+92-3800-8060" class="main-header__right__call">
-                            <div class="main-header__right__icon">
-                                <i class="icon-call"></i>
-                            </div>
-                            <div class="main-header__right__content">
-                                <div class="main-header__right__text">Get Contact & Consultation</div>
-                                <div class="main-header__right__number">+250 7888 48185</div>
-                            </div>
-                        </a>
+                    <a href="?lang=en" class="main-header__right__info__item" >
+                          <img src="assets/images/en.png" alt="English" />
+                     </a>
+                     <a href="?lang=fr" class="main-header__right__info__item">
+                          <img src="assets/images/fr.png" alt="French" />
+                     </a>
                         <div class="mobile-nav__btn mobile-nav__toggler">
                             <span></span>
                             <span></span>
@@ -126,3 +132,20 @@
                 </div>
             </div>
         </header>
+
+        <script>
+        function changeLanguage() {
+            var lang = document.getElementById('lang').value;
+            window.location.href = '?lang=' + lang;
+        }
+    </script> 
+     <?php
+    // Include the PHP logic here
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (isset($_GET['lang'])) {
+        $_SESSION['lang'] = $_GET['lang'];
+    }
+    ?>
