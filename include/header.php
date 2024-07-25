@@ -59,7 +59,7 @@
                         </li>
                         <li class="topbar-one__info__item">
                         <i class="icon-call"></i>
-                        <a href="mailto:#">+250 788 411 095</a>
+                        <span>+250 788 411 095</span>
                         </li>
                     </ul>
                     <div class="topbar-one__right">
@@ -96,7 +96,7 @@
                             <li class="dropdown">
                                 <a><?= __('Service')?></a>
                                 <ul class="sub-menu">
-                                    <li><a href="legal_services.php"><?= __('Legal Services')?></a></li>
+                                    <li><a href="legal_services"><?= __('Legal Services')?></a></li>
                                     <li><a href="property_service"><?= __('Property Management')?></a></li>
                                 </ul>
                             </li>
