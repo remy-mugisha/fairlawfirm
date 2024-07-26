@@ -186,7 +186,7 @@
 
         <!--Cta Section Start -->
         <section class="cta-one">
-            <div class="cta-one__bg jarallax" data-jarallax data-speed="0.3" data-imgPosition="50% -100%" style="background-image: url(assets/images/backgrounds/3-1.jpg);"></div>
+            <div class="cta-one__bg jarallax" data-jarallax data-speed="0.3" data-imgPosition="50% -100%" style="background-image: url(assets/images/backgrounds/justice-maze.jpg);"></div>
             <div class="container">
                 <div class="row align-items-center gutter-x-0">
                     <div class="col-lg-7">
