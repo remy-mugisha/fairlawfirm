@@ -64,10 +64,10 @@
                     </ul>
                     <div class="topbar-one__right">
                         <div class="topbar-one__social">
-                            <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
-                            <a href="https://twitter.com/"><i class="icon-x-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
-                            <a href="https://facebook.com/"><i class="fab fa-linkedin"></i><span class="sr-only">linkedin</span></a>
-                            <a href="https://instagram.com/"><i class="fab fa-instagram"></i><span class="sr-only">instagram</span></a>
+                            <!-- <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a> -->
+                            <a href="https://x.com/fairlawfirmltd"><i class="icon-x-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
+                            <a href="https://www.linkedin.com/in/fair-law-firm-ltd-6154b3317/"><i class="fab fa-linkedin"></i><span class="sr-only">linkedin</span></a>
+                            <a href="https://www.instagram.com/fair_law_firm_ltd/"><i class="fab fa-instagram"></i><span class="sr-only">instagram</span></a>
                         </div>
                     </div>
                 </div>

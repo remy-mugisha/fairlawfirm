@@ -3,7 +3,7 @@ $host = "localhost";
 $dbname = "properties";
 $charset = "utf8";
 $username = "root";
-$password = "";
+$password = "Remier@&30";
 
 try {
     $db = new PDO(

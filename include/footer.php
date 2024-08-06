@@ -63,7 +63,7 @@
                             <div class="footer-widget footer-widget--link">
                                 <h2 class="footer-widget__title"><?= __('Social Media')?></h2>
                         <div class="topbar-one__social">
-                            <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+                            <!-- <a href="https://facebook.com/"><i class="icon-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a> -->
                             <a href="https://twitter.com/"><i class="icon-x-twitter" aria-hidden="true"></i> <span class="sr-only">Twitter</span></a>
                             <a href="https://facebook.com/"><i class="fab fa-linkedin"></i><span class="sr-only">linkedin</span></a>
                             <a href="https://instagram.com/"><i class="fab fa-instagram"></i><span class="sr-only">instagram</span></a>

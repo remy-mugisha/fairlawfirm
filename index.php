@@ -30,7 +30,7 @@
 	    }'>
                 <div class="item">
                     <div class="main-slider-one__item">
-                        <div class="main-slider-one__bg" style="background-image: url(assets/images/backgrounds/flyer_fair_law_2.jpg);"></div>
+                        <div class="main-slider-one__bg" style="background-image: url(assets/images/backgrounds/bkground_1.jpg);"></div>
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
@@ -46,7 +46,7 @@
 
                 <div class="item">
                     <div class="main-slider-one__item">
-                        <div class="main-slider-one__bg" style="background-image: url(assets/images/backgrounds/flyer_fair_law_3.jpg);"></div>
+                        <div class="main-slider-one__bg" style="background-image: url(assets/images/backgrounds/bkground_2.jpg);"></div>
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
@@ -61,7 +61,7 @@
                 </div>
                 <div class="item">
                     <div class="main-slider-one__item">
-                        <div class="main-slider-one__bg" style="background-image: url(assets/images/backgrounds/flyer_fair_law_1.jpg);"></div>
+                        <div class="main-slider-one__bg" style="background-image: url(assets/images/backgrounds/bkground_3.jpg);"></div>
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
