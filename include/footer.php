@@ -32,7 +32,7 @@
                                         </div>
                                         <div class="footer-widget__contact__inner">
                                         <a href="" class="footer-widget__contact__text">fairlawfirmltd@gmail.com</a>
-                                        <a href="" class="footer-widget__contact__text">www.website.com</a>
+                                        <a href="https://fairlawfirmltd.com/" class="footer-widget__contact__text">www.fairlawfirmltd.com</a>
                                         </div>
                                     </li>
                                     <li class="footer-widget__contact__item">
