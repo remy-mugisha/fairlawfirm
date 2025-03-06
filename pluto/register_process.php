@@ -12,7 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
     $confirm_password = $_POST['confirm_password'];
     $role_id = filter_var($_POST['role_id'], FILTER_SANITIZE_NUMBER_INT);
-    $status = 'Pending'; // Default status for new users
+    
+    // Change default status to 'Active' so users appear immediately in the management panel
+    $status = 'Active'; 
     
     // Determine user type based on role_id
     $usertype = ($role_id == 1) ? 'admin' : 'user';
@@ -98,8 +100,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Commit transaction
         $conn->commit();
         
-        $_SESSION['success_message'] = "Registration successful! You can now login.";
-        header("Location: index");
+        $_SESSION['success_message'] = "Registration successful! User has been added.";
+        
+        // Redirect based on where the registration came from
+        if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'manage_users.php') !== false) {
+            header("Location: manage_users.php");
+        } else {
+            header("Location: index.php");
+        }
         exit();
         
     } catch (Exception $e) {

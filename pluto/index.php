@@ -112,9 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="field margin_0">
                                     <button type="submit" class="main_bt">Login</button>
                                 </div>
-                                <div class="field text-center mt-3">
-                                    <p>Don't have an account? <a href="register.php">Register here</a></p>
-                                </div>
                             </fieldset>
                         </form>
                     </div>

@@ -78,7 +78,6 @@ if(!isset($_SESSION["email"])){
     <span class="name_user"><?php echo htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']); ?></span>
 </a>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="register.php">Registration</a>
             <a class="dropdown-item" href="profile.php">My Profile</a>
             <a class="dropdown-item" href="logout.php"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
         </div>
