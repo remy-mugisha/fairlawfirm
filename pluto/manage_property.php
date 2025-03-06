@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 require_once 'include/header.php';
 ?>
 
@@ -64,9 +64,12 @@ require_once 'include/header.php';
                                 </div>
                                 
                                 <div class="form-group row">
-                                    <label class="control-label col-sm-3" for="description">Description</label>
+                                    <label class="control-label col-sm-3" for="title">Title</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" name="description" id="description" rows="4" placeholder="Enter property description" required></textarea>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="title" placeholder="Enter title" required>
+                                        </div>
+                                        <!-- <textarea class="form-control" name="title" id="title" rows="4" placeholder="Enter property title" required></textarea> -->
                                     </div>
                                 </div>
                                 

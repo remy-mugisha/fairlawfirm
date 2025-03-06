@@ -1,83 +1,98 @@
-<!DOCTYPE html>
 <?php
 session_start();
+
 require_once 'propertyMgt/config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST["email"]);
+    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE email = :email");
-    $stmt->execute([':email' => $email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
+        // Query login table for authentication
+        $stmt = $conn->prepare("SELECT l.*, u.first_name, u.last_name, u.profile_image, u.status 
+                               FROM login l
+                               LEFT JOIN users u ON l.email = u.email
+                               WHERE l.email = :email");
+        $stmt->bindParam(':email', $email);
+        
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role_id'] = $user['role_id'];
-        $_SESSION['email'] = $user['email'];
+        if ($user) {
+            // Check user status
+            if (isset($user['status']) && $user['status'] !== 'Active') {
+                $error_message = "Your account is not active yet. Please contact the administrator.";
+            } 
+            // Verify password
+            else if (password_verify($password, $user['password'])) {
+                $_SESSION['user_type'] = $user['usertype'];
+                $_SESSION['email'] = $user['email'];
+                
+                // Store additional user information
+                if (isset($user['first_name'])) {
+                    $_SESSION['first_name'] = $user['first_name'];
+                    $_SESSION['last_name'] = $user['last_name'];
+                    $_SESSION['profile_image'] = $user['profile_image'];
+                }
 
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        echo "Invalid email or password";
+                if ($user['usertype'] == 'admin') {
+                    header("Location: dashboard.php");
+                    exit();
+                } elseif ($user['usertype'] == 'user') {
+                    header("Location: dashboard.php");
+                    exit();
+                }
+            } else {
+                $error_message = "Invalid email or password";
+            }
+        } else {
+            $error_message = "User not found";
+        }
+    } catch (PDOException $e) {
+        $error_message = "Database error: " . $e->getMessage();
     }
 }
 ?>
 
-
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<!DOCTYPE html>
+<html lang="en">
 <head>
-      <!-- basic -->
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <!-- mobile metas -->
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-      <!-- site metas -->
-      <title>Pluto - Responsive Bootstrap Admin Panel Templates</title>
-      <meta name="keywords" content="">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <!-- site icon -->
-      <link rel="icon" href="images/fevicon.html" type="image/png" />
-      <!-- bootstrap css -->
-      <link rel="stylesheet" href="css/bootstrap.min.css" />
-      <!-- site css -->
-      <link rel="stylesheet" href="style.css" />
-      <!-- responsive css -->
-      <link rel="stylesheet" href="css/responsive.css" />
-      <!-- color css -->
-      <link rel="stylesheet" href="css/colors.html" />
-      <!-- select bootstrap -->
-      <link rel="stylesheet" href="css/bootstrap-select.css" />
-      <!-- scrollbar css -->
-      <link rel="stylesheet" href="css/perfect-scrollbar.css" />
-      <!-- custom css -->
-      <link rel="stylesheet" href="css/custom.css" />
-      <!-- calendar file css -->
-      <link rel="stylesheet" href="js/semantic.min.html" />
-      <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-   </head>
-   <body class="inner_page login">
-   <div class="full_container">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fair Law Firm - Login</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="inner_page login">
+    <div class="full_container">
         <div class="container">
             <div class="center verticle_center full_height">
                 <div class="login_section">
                     <div class="logo_login">
                         <div class="center">
                             <h2 style="color: #fff;">Fair Law Firm</h2>
-                            <!-- <img width="210" src="images/logo/logo-0.jpg" alt="#" /> -->
                         </div>
                     </div>
                     <div class="login_form">
-                    <?php if (!empty($error_message)) : ?>
-                        <div class="alert alert-danger">
-                            <?php echo $error_message; ?>
-                        </div>
-                    <?php endif; ?>
+                        <?php 
+                        // Display error message if exists
+                        if (!empty($error_message)) : ?>
+                            <div class="alert alert-danger">
+                                <?php echo htmlspecialchars($error_message); ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php 
+                        // Display success message if exists
+                        if (!empty($_SESSION['success_message'])) : ?>
+                            <div class="alert alert-success">
+                                <?php 
+                                echo htmlspecialchars($_SESSION['success_message']); 
+                                unset($_SESSION['success_message']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+                        
                         <form method="POST" action="">
                             <fieldset>
                                 <div class="field">
@@ -97,28 +112,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="field margin_0">
                                     <button type="submit" class="main_bt">Login</button>
                                 </div>
+                                <div class="field text-center mt-3">
+                                    <p>Don't have an account? <a href="register.php">Register here</a></p>
+                                </div>
                             </fieldset>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-      <!-- jQuery -->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/popper.min.js"></script>
-      <script src="js/bootstrap.min.js"></script>
-      <!-- wow animation -->
-      <script src="js/animate.js"></script>
-      <!-- select country -->
-      <script src="js/bootstrap-select.js"></script>
-      <!-- nice scrollbar -->
-      <script src="js/perfect-scrollbar.min.js"></script>
-      <script>
-         var ps = new PerfectScrollbar('#sidebar');
-      </script>
-      <!-- custom js -->
-      <script src="js/custom.js"></script>
-   </body>
+</body>
 </html>

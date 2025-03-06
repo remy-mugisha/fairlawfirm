@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -12,30 +12,45 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $id = $_GET['id'];
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
     $location = $_POST['location'];
-    $description = $_POST['description'];
+    $title = $_POST['title'];
     
     try {
         if (!empty($_FILES['image']['name'])) {
+            // Get the old image path
             $stmt = $conn->prepare("SELECT image FROM add_property WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             $property = $stmt->fetch(PDO::FETCH_ASSOC);
-            $oldImagePath = $property['image'];           
-            $targetDir = "uploads/";
+            $oldImagePath = $property['image'];
+            
+            // Set the correct target directory
+            $targetDir = "propertyMgt/proImg/";
+            
+            // Make sure the directory exists
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            
             $fileName = basename($_FILES["image"]["name"]);
             $targetFilePath = $targetDir . time() . '_' . $fileName;
-            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);           
+            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+            
             $allowTypes = array('jpg', 'jpeg', 'png', 'gif');
             if (in_array(strtolower($fileType), $allowTypes)) {
                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                    $stmt = $conn->prepare("UPDATE add_property SET image = :image, location = :location, description = :description WHERE id = :id");
-                    $stmt->bindParam(':image', $targetFilePath);
+                    // Store only the filename in the database, not the full path
+                    $imageDbPath = time() . '_' . $fileName;
+                    
+                    $stmt = $conn->prepare("UPDATE add_property SET image = :image, location = :location, title = :title WHERE id = :id");
+                    $stmt->bindParam(':image', $imageDbPath);
                     $stmt->bindParam(':location', $location);
-                    $stmt->bindParam(':description', $description);
+                    $stmt->bindParam(':title', $title);
                     $stmt->bindParam(':id', $id);
-                    $stmt->execute();                    
-                    if (file_exists($oldImagePath)) {
-                        unlink($oldImagePath);
+                    $stmt->execute();
+                    
+                    // Delete the old image if it exists
+                    if (!empty($oldImagePath) && file_exists("propertyMgt/proImg/" . $oldImagePath)) {
+                        unlink("propertyMgt/proImg/" . $oldImagePath);
                     }
                     
                     $_SESSION['success_message'] = "Property updated successfully!";
@@ -46,20 +61,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
                 $_SESSION['error_message'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
             }
         } else {
-            $stmt = $conn->prepare("UPDATE add_property SET location = :location, description = :description WHERE id = :id");
+            $stmt = $conn->prepare("UPDATE add_property SET location = :location, title = :title WHERE id = :id");
             $stmt->bindParam(':location', $location);
-            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':title', $title);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             
             $_SESSION['success_message'] = "Property updated successfully!";
-        }       
+        }
+        
         echo "<script>window.location.href = 'display_properties.php';</script>";
         exit();
     } catch(PDOException $e) {
         $_SESSION['error_message'] = "Error updating property: " . $e->getMessage();
     }
 }
+
 try {
     $stmt = $conn->prepare("SELECT * FROM add_property WHERE id = :id");
     $stmt->bindParam(':id', $id);
@@ -94,7 +111,7 @@ try {
                                 <div class="form-group row">
                                     <label class="control-label col-sm-3">Current Image</label>
                                     <div class="col-sm-9">
-                                        <img src="propertyMgt/propertyImg/<?php echo $property['image']; ?>" alt="Current Property Image" class="img-thumbnail" style="max-height: 200px;">
+                                        <img src="propertyMgt/proImg/<?php echo htmlspecialchars($property['image']); ?>" alt="Current Property Image" class="img-thumbnail" style="max-height: 200px;">
                                     </div>
                                 </div>                             
                                 <div class="form-group row">
@@ -116,9 +133,9 @@ try {
                                     </div>
                                 </div>                             
                                 <div class="form-group row">
-                                    <label class="control-label col-sm-3" for="description">Description</label>
+                                    <label class="control-label col-sm-3" for="title">Title</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" name="description" id="description" rows="4" required><?php echo htmlspecialchars($property['description']); ?></textarea>
+                                        <textarea class="form-control" name="title" id="title" rows="4" required><?php echo htmlspecialchars($property['title']); ?></textarea>
                                     </div>
                                 </div>                               
                                 <div class="form-group row">

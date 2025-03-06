@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -9,10 +9,13 @@ if (isset($_GET['delete'])) {
         $stmt = $conn->prepare("SELECT image FROM add_property WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        $property = $stmt->fetch(PDO::FETCH_ASSOC);       
-        if ($property && file_exists($property['image'])) {
-            unlink($property['image']);
-        }      
+        $property = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Delete the image file if it exists
+        if ($property && !empty($property['image']) && file_exists("propertyMgt/proImg/" . $property['image'])) {
+            unlink("propertyMgt/proImg/" . $property['image']);
+        }
+        
         $stmt = $conn->prepare("DELETE FROM add_property WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -24,6 +27,7 @@ if (isset($_GET['delete'])) {
     echo "<script>window.location.href = 'display_properties.php';</script>";
     exit();
 }
+
 try {
     $stmt = $conn->query("SELECT * FROM add_property where status='Active' ORDER BY id DESC");
     $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -78,7 +82,7 @@ try {
                                     <th>ID</th>
                                     <th>Image</th>
                                     <th>Location</th>
-                                    <th>Description</th>
+                                    <th>title</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -90,7 +94,7 @@ try {
                                         <img src="propertyMgt/proImg/<?php echo htmlspecialchars($property['image']); ?>" alt="Property Image" class="img-thumbnail" style="max-height: 100px;">
                                     </td>
                                     <td><?php echo htmlspecialchars($property['location']); ?></td>
-                                    <td><?php echo htmlspecialchars($property['description']); ?></td>
+                                    <td><?php echo htmlspecialchars($property['title']); ?></td>
                                     <td>
                                         <a href="edit_property.php?id=<?php echo $property['id']; ?>" class="btn btn-info btn-sm">
                                             <i class="fa fa-edit"></i> Edit

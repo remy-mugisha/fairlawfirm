@@ -84,7 +84,7 @@
                                 </li>
                             </ul>
                             <ul class="list-unstyled blog-card__three__meta">
-                                <li class="blog-card__three__meta__item"><?php echo htmlspecialchars($add_property['description']); ?></li>
+                                <li class="blog-card__three__meta__item"><?php echo htmlspecialchars($add_property['title']); ?></li>
                             </ul>
                         </div>
                     </div>

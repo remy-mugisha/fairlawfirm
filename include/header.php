@@ -104,7 +104,7 @@
                                 <a><?= __('Property')?></a>
                                 <ul class="sub-menu">
                                     <li><a href="manage_property"><?= __('Manage Properties')?></a></li>
-                                    <li><a href="hdjhjs"><?= __('Rental house')?></a></li>
+                                    <li><a href="property"><?= __('Rental house')?></a></li>
                                 </ul>
                             </li>
                             <li class="">

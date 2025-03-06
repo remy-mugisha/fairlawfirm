@@ -1,10 +1,10 @@
 <?php
-session_start();
+// session_start();
 require_once 'propertyMgt/config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $location = $_POST['location'];
-    $description = $_POST['description'];   
+    $title = $_POST['title'];   
     $targetDir = "propertyMgt/proImg/";
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -19,10 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
             try {
                 $imagePathForDB = time() . '_' . $fileName;
-                $stmt = $conn->prepare("INSERT INTO add_property (image, location, description) VALUES (:image, :location, :description)");
+                $stmt = $conn->prepare("INSERT INTO add_property (image, location, title) VALUES (:image, :location, :title)");
                 $stmt->bindParam(':image', $imagePathForDB);
                 $stmt->bindParam(':location', $location);
-                $stmt->bindParam(':description', $description);
+                $stmt->bindParam(':title', $title);
                 $stmt->execute();
                 
                 $_SESSION['success_message'] = "Property added successfully!";

@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -164,6 +164,7 @@ if (isset($_POST['submit'])) {
                                         <select class="form-control" name="property_status" required>
                                             <option value="">Select Status</option>
                                             <option value="For Rent">For Rent</option>
+                                            <option value="For Rent">For Sale</option>
                                             <option value="Not Available">Not Available</option>
                                         </select>
                                     </div>
