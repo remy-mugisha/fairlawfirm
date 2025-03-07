@@ -41,13 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Generate reset link
             $resetLink = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/reset_password.php?token=" . $token;
             
-            // For local development: display the link instead of sending an email
+            // For local development: redirect directly to reset_password.php
             if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1') {
-                // Store the reset link in session for display
-                $_SESSION['reset_link'] = $resetLink;
-                $_SESSION['reset_email'] = $email;
-                $_SESSION['success_message'] = "Password reset link generated. In a production environment, this would be emailed to the user.";
-                header("Location: display_reset_link.php");
+                header("Location: reset_password.php?token=" . $token);
                 exit();
             } else {
                 // This is for production - attempt to send email
@@ -100,11 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container">
             <div class="center verticle_center full_height">
                 <div class="login_section">
-                    <div class="logo_login">
-                        <div class="center">
-                            <h2 style="color: #fff;">Fair Law Firm</h2>
-                        </div>
-                    </div>
                     <div class="login_form">
                         <?php if (!empty($error_message)) : ?>
                             <div class="alert alert-danger">

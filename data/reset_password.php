@@ -24,11 +24,6 @@ try {
 $token = isset($_GET['token']) ? $_GET['token'] : null;
 $valid_token = false;
 
-// Debug information
-echo "<div style='background: #f8f9fa; padding: 10px; margin: 10px; border: 1px solid #ddd;'>";
-echo "Debug Info (remove in production):<br>";
-echo "Token from URL: " . htmlspecialchars($token ?? 'Not provided') . "<br>";
-
 if ($token) {
     try {
         // Fetch the token regardless of expiry
@@ -36,37 +31,23 @@ if ($token) {
         $stmt->bindParam(':token', $token);
         $stmt->execute();
         
-        echo "Query executed<br>";
-        echo "Rows found: " . $stmt->rowCount() . "<br>";
-        
         if ($stmt->rowCount() > 0) {
             $reset_data = $stmt->fetch(PDO::FETCH_ASSOC);
             $expiry = strtotime($reset_data['expiry']);
             $current_time = time();
             
-            echo "Token found. Expiry: " . htmlspecialchars($reset_data['expiry']) . "<br>";
-            echo "Current time: " . date('Y-m-d H:i:s', $current_time) . "<br>";
-            
             if ($expiry > $current_time) {
                 $valid_token = true;
                 $email = $reset_data['email'];
-                echo "Token is valid for email: " . htmlspecialchars($email) . "<br>";
-            } else {
-                echo "Token found but expired. Expiry was: " . htmlspecialchars($reset_data['expiry']) . "<br>";
             }
-        } else {
-            echo "Token not found in database<br>";
         }
     } catch (PDOException $e) {
-        echo "Database error: " . $e->getMessage() . "<br>";
+        // Handle database error silently in production
     }
 }
-echo "</div>";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token'])) {
     $token = $_POST['token'];
-    echo "Token from POST: " . htmlspecialchars($token) . "<br>";
-    
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
     
