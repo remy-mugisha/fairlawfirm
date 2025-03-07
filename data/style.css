@@ -1773,7 +1773,7 @@ button.main_bt {
 
 .main_bt:hover,
 .main_bt:focus {
-    background: #ff5722;
+    background: #1e1e1d;
     color: #fff;
 }
 
@@ -3374,7 +3374,7 @@ table.projects tr td:first-child {
     margin: 11px 0;
     position: relative;
     left: 0;
-    color: #ff5722;
+    color: #1ed085;
 }
 
 

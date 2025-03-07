@@ -1,4 +1,8 @@
 <?php
+// Start output buffering
+ob_start();
+
+// Include necessary files
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -48,7 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Begin transaction
         $conn->beginTransaction();
-        
+
+        // Temporarily disable foreign key checks (if supported by your database)
+        $conn->exec("SET FOREIGN_KEY_CHECKS=0");
+
         // Check if email changed and if it's already in use
         if ($email !== $user['email']) {
             $check_email = $conn->prepare("SELECT email FROM login WHERE email = :email AND email != :current_email");
@@ -60,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new Exception("Email already exists");
             }
             
-            // Update email in login table if it changed
+            // Update email in login table first (parent table)
             $update_login = $conn->prepare("UPDATE login SET email = :new_email WHERE email = :old_email");
             $update_login->bindParam(':new_email', $email);
             $update_login->bindParam(':old_email', $user['email']);
@@ -74,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $update_usertype->bindParam(':email', $email);
         $update_usertype->execute();
         
-        // Update user details
+        // Update user details in users table (child table)
         $stmt = $conn->prepare("UPDATE users 
                                 SET first_name = :first_name, 
                                     last_name = :last_name, 
@@ -142,6 +149,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         
+        // Re-enable foreign key checks
+        $conn->exec("SET FOREIGN_KEY_CHECKS=1");
+
         // Commit transaction
         $conn->commit();
         
@@ -152,6 +162,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Rollback transaction on error
         $conn->rollback();
         
+        // Re-enable foreign key checks in case of error
+        $conn->exec("SET FOREIGN_KEY_CHECKS=1");
+
         $_SESSION['error_message'] = "Error updating user: " . $e->getMessage();
         header("Location: edit_user.php?id=" . $id);
         exit();
@@ -166,6 +179,8 @@ try {
     $error = "Error fetching roles: " . $e->getMessage();
 }
 ?>
+
+<!-- Rest of your HTML form remains the same -->
 
 <div class="row column1">
     <div class="col-md-12">
@@ -259,4 +274,6 @@ try {
 
 <?php
 require_once 'include/footer.php';
+// End output buffering and send the output to the browser
+ob_end_flush();
 ?>

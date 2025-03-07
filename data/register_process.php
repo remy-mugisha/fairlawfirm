@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'manage_users.php') !== false) {
             header("Location: manage_users.php");
         } else {
-            header("Location: index.php");
+            header("Location: register.php");
         }
         exit();
         

@@ -96,6 +96,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container">
             <div class="center verticle_center full_height">
                 <div class="login_section">
+                    <div class="logo_login">
+                        <div class="center">
+                            <h2 style="color: #fff;">Fair Law Firm</h2>
+                        </div>
+                    </div>
                     <div class="login_form">
                         <?php if (!empty($error_message)) : ?>
                             <div class="alert alert-danger">

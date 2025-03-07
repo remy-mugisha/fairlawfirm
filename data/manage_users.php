@@ -1,4 +1,8 @@
 <?php
+// Start output buffering at the very beginning
+ob_start();
+
+// Include necessary files
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -15,13 +19,13 @@ if (isset($_GET['delete'])) {
         // Begin transaction
         $conn->beginTransaction();
         
-        // First delete from login table since it has a foreign key relationship
-        $stmt = $conn->prepare("DELETE FROM login WHERE email = (SELECT email FROM users WHERE id = :id)");
+        // First delete from users table
+        $stmt = $conn->prepare("DELETE FROM users WHERE id = :id");
         $stmt->bindParam(':id', $delete_id);
         $stmt->execute();
         
-        // Then delete from users table
-        $stmt = $conn->prepare("DELETE FROM users WHERE id = :id");
+        // Then delete from login table
+        $stmt = $conn->prepare("DELETE FROM login WHERE email = (SELECT email FROM users WHERE id = :id)");
         $stmt->bindParam(':id', $delete_id);
         $stmt->execute();
         
@@ -29,7 +33,7 @@ if (isset($_GET['delete'])) {
         $conn->commit();
         
         $_SESSION['success_message'] = "User deleted successfully!";
-        header("Location: manage_users.php");
+        header("Location: manage_users");
         exit();
     } catch(PDOException $e) {
         // Rollback transaction on error
@@ -41,7 +45,7 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// Fetch all users from the database - REMOVED the Active status filter to show all users
+// Fetch all users from the database
 try {
     $stmt = $conn->query("SELECT u.*, r.role_name 
                           FROM users u 
@@ -53,6 +57,7 @@ try {
 }
 ?>
 
+<!-- Rest of your HTML content -->
 <div class="row column1">
     <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
@@ -193,4 +198,7 @@ try {
 
 <?php
 require_once 'include/footer.php';
+
+// End output buffering and send the output to the browser
+ob_end_flush();
 ?>
