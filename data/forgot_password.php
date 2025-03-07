@@ -66,15 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         } else {
-            // Don't reveal that the email doesn't exist for security reasons
-            // For local development, we'll be more informative
-            if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1') {
-                $error_message = "Email not found in database. For testing, please use an email that exists in your login table.";
-            } else {
-                $_SESSION['success_message'] = "If your email exists in our system, you will receive password reset instructions.";
-                header("Location: index");
-                exit();
-            }
+            // Email not found in the database
+            $error_message = "The email address you entered is not registered. Please check your email or contact support.";
         }
     } catch (PDOException $e) {
         $error_message = "Database error: " . $e->getMessage();
