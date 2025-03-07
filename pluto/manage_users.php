@@ -126,13 +126,13 @@ try {
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewUserModal<?php echo $user['id']; ?>">
-                                            <i class="fa fa-eye"></i> View
+                                            <i class="fa fa-eye"></i>
                                         </button>
                                         <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn btn-info btn-sm">
-                                            <i class="fa fa-edit"></i> Edit
+                                            <i class="fa fa-edit"></i> 
                                         </a>
                                         <a href="manage_users.php?delete=<?php echo $user['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">
-                                            <i class="fa fa-trash"></i> Delete
+                                            <i class="fa fa-trash"></i> 
                                         </a>
                                     </td>
                                 </tr>

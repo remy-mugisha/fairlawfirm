@@ -91,18 +91,16 @@ if(!isset($_SESSION["email"])){
                         <a href="manage_users">
                         <i class="fa fa-briefcase blue1_color"></i> <span>Manage Users</span></a>
                      </li> -->
-                     <?php if ($_SESSION['user_type'] == 'admin'): ?>
-                            <li><a href="manage_users.php"><i class="fa fa-users"></i> <span>Manage Users</span></a></li>
-                        <?php endif; ?>
+                     
                      <li>
-                        <a href="manage_property">
+                        <a href="display_properties">
                         <i class="fa fa-briefcase blue1_color"></i> <span>Add Manage Properties</span></a>
                      </li>
                      <li>
-                        <a href="add_rental_property">
+                        <a href="display_rental">
                         <i class="fa fa-plus blue1_color"></i> <span>Add Rental House</span></a>
                      </li>
-                     <li><a href="#"><i class="fa fa-newspaper-o blue1_color"></i> <span>Add Blog</span></a></li>
+                     <!-- <li><a href="#"><i class="fa fa-newspaper-o blue1_color"></i> <span>Add Blog</span></a></li> -->
                      <li class="active">
                         <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-table purple_color2"></i> <span>Show Tables</span></a>
                         <ul class="collapse list-unstyled" id="additional_page">
@@ -112,11 +110,14 @@ if(!isset($_SESSION["email"])){
                            <li>
                               <a href="display_rental">> <span>Rental House</span></a>
                            </li>
-                           <li>
+                           <!-- <li>
                               <a href="#">> <span>Blog</span></a>
-                           </li>
+                           </li> -->
                         </ul>
                      </li>
+                     <?php if ($_SESSION['user_type'] == 'admin'): ?>
+                            <li><a href="manage_users.php"><i class="fa fa-users yellow_color"></i> <span>Manage Users</span></a></li>
+                     <?php endif; ?>
                      <li><a href="#"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>
                      <!-- <li><a href="logout.php"><i class=""></i> <span>Logout</span></a></li> -->
                   </ul>

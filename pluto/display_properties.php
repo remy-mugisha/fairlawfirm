@@ -97,10 +97,10 @@ try {
                                     <td><?php echo htmlspecialchars($property['title']); ?></td>
                                     <td>
                                         <a href="edit_property.php?id=<?php echo $property['id']; ?>" class="btn btn-info btn-sm">
-                                            <i class="fa fa-edit"></i> Edit
+                                            <i class="fa fa-edit"></i> 
                                         </a>
                                         <a href="display_properties.php?delete=<?php echo $property['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this property?')">
-                                            <i class="fa fa-trash"></i> Delete
+                                            <i class="fa fa-trash"></i> 
                                         </a>
                                     </td>
                                 </tr>
