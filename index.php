@@ -215,7 +215,7 @@
         <!-- Cta Section End -->
 
              <?php
-        require_once 'pluto/propertyMgt/config.php';
+        require_once 'data/propertyMgt/config.php';
                     $selectAllUsers = $conn->prepare("SELECT description_blog, img,date,id,title FROM blog LIMIT 3");
                     $selectAllUsers->execute();
                     if ($row = $selectAllUsers->fetch()) {

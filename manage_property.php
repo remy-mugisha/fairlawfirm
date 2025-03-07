@@ -24,7 +24,7 @@
     </section>
 
     <?php
-    require_once 'pluto/propertyMgt/config.php';
+    require_once 'data/propertyMgt/config.php';
     
     // Pagination settings
     $items_per_page = 6;
@@ -73,18 +73,18 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="blog-card wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='000ms'>
                         <a href="#" class="blog-card__image">
-                            <img class="blog-card__image" src="pluto/propertyMgt/proImg/<?php echo $add_property['image']; ?>" alt="<?php echo htmlspecialchars($add_property['location']); ?>">
+                            <img class="blog-card__image" src="data/propertyMgt/proImg/<?php echo $add_property['image']; ?>" alt="<?php echo htmlspecialchars($add_property['location']); ?>">
                         </a>
 
                         <div class="blog-card__three__content">
                             <ul class="list-unstyled blog-card__three__meta">
                                 <li class="blog-card__three__meta__item" style="color: #198754;">
                                 <i class="icon-pin2" style="color: #198754;"></i>
-                                    <?php echo htmlspecialchars($add_property['location']); ?>
+                                    <?php echo htmlspecialchars(__($add_property['location'])); ?>
                                 </li>
                             </ul>
                             <ul class="list-unstyled blog-card__three__meta">
-                                <li class="blog-card__three__meta__item"><?php echo htmlspecialchars($add_property['title']); ?></li>
+                                <li class="blog-card__three__meta__item"><?php echo htmlspecialchars(__($add_property['title'])); ?></li>
                             </ul>
                         </div>
                     </div>

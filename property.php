@@ -32,7 +32,7 @@
 
              <?php
         // require 'propertyMgt/conn.php';
-           require_once 'pluto/propertyMgt/config.php';
+           require_once 'data/propertyMgt/config.php';
 
                     $selectAllUsers = $conn->prepare("SELECT *FROM properties ");
                     $selectAllUsers->execute();
@@ -50,7 +50,7 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="blog-card wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='000ms'>
                             <a href="property_detail?id=<?php echo $row['id'];?>" class="blog-card__image">
-                                <img src="pluto/propertyMgt/propertyImg/<?php echo $row['image'];?>" alt="Elevating Heroism Apeium Eques in the Fire Service">
+                                <img src="data/propertyMgt/propertyImg/<?php echo $row['image'];?>" alt="Elevating Heroism Apeium Eques in the Fire Service">
                             </a>
 
                             <div class="blog-card__three__content">

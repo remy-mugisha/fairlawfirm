@@ -105,7 +105,6 @@ $lang = [
     // property start
     'REAL ESTATE PROPERTIES'=>'PROPRIÉTÉS IMMOBILIÈRES',
     'This house is managed by Fair Law Firm LTD'=>'Cette maison est gérée par Fair Law Firm LTD',
-    // property end
 
     // contact page start
     'Contact Information'=>'Informations de contact',

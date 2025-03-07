@@ -18,13 +18,13 @@
   
     <div class="page-wrapper">
      <?php
-        require 'pluto/propertyMgt/config.php'; 
+        require 'data/propertyMgt/config.php'; 
         $selectAllUsers = $conn->prepare("SELECT * FROM properties  WHERE id = '".$_GET['id']."' ");
         $selectAllUsers->execute();
         if ($row = $selectAllUsers->fetch()) {
         ?> 
         <section class="page-header">
-            <div class="page-header__bg" style="background-image: url(pluto/propertyMgt/propertyImg/<?php echo $row['image'];?>);"></div>
+            <div class="page-header__bg" style="background-image: url(data/propertyMgt/propertyImg/<?php echo $row['image'];?>);"></div>
             <div class="container">
                 <h2 class="page-header__title"><?php echo $row['title'];?></h2>
                 <ul class="firdip-breadcrumb list-unstyled">
@@ -43,7 +43,7 @@
                         <div class="blog-details">
                             <div class="blog-card__two">
                                 <div class="blog-card__two__image">
-                                    <img src="pluto/propertyMgt/propertyImg/<?php echo $row['image']?>" alt="firdip image" height="460px" width="100%">
+                                    <img src="data/propertyMgt/propertyImg/<?php echo $row['image']?>" alt="firdip image" height="460px" width="100%">
                                 </div>
 
                                 <div class="blog-card-two__content">
