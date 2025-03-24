@@ -2,7 +2,6 @@
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
-// Fetch roles from database for dropdown
 try {
     $stmt = $conn->prepare("SELECT * FROM roles");
     $stmt->execute();
@@ -14,7 +13,6 @@ try {
 
 <div class="full_container">
     <div class="inner_container">
-        <!-- Registration Form Section -->
         <div class="midde_cont">
             <div class="container-fluid">
                 
@@ -27,14 +25,12 @@ try {
                                 </div>
                             </div>
                             <div class="full padding_infor_info">
-                                <!-- Display error message if exists -->
                                 <?php if (!empty($error_message)): ?>
                                     <div class="alert alert-danger">
                                         <?php echo htmlspecialchars($error_message); ?>
                                     </div>
                                 <?php endif; ?>
                                 
-                                <!-- Display success message if exists -->
                                 <?php if (!empty($_SESSION['success_message'])): ?>
                                     <div class="alert alert-success">
                                         <?php 
@@ -129,7 +125,6 @@ try {
 require_once 'include/footer.php';
 ?>
 <style>
-/* Custom Styles for Registration Form */
 .white_shd {
     background: #fff;
     padding: 20px;
@@ -163,7 +158,6 @@ require_once 'include/footer.php';
     font-size: 16px;
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
     .white_shd {
         padding: 15px;

@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     try {
-        // Query login table for authentication
         $stmt = $conn->prepare("SELECT l.*, u.first_name, u.last_name, u.profile_image, u.status 
                                FROM login l
                                LEFT JOIN users u ON l.email = u.email
@@ -19,16 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            // Check user status
             if (isset($user['status']) && $user['status'] !== 'Active') {
                 $error_message = "Your account is not active yet. Please contact the administrator.";
             } 
-            // Verify password
             else if (password_verify($password, $user['password'])) {
                 $_SESSION['user_type'] = $user['usertype'];
                 $_SESSION['email'] = $user['email'];
                 
-                // Store additional user information
                 if (isset($user['first_name'])) {
                     $_SESSION['first_name'] = $user['first_name'];
                     $_SESSION['last_name'] = $user['last_name'];
@@ -58,66 +54,173 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Fair Law Firm - Login</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-color:rgb(247, 247, 247);
+            /* --primary-color: #2c3e50; */
+            --secondary-color: #3498db;
+            --light-color: #ecf0f1;
+        }
+        
+        body {
+            background-color: var(--primary-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .form-control {
+            height: 45px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding-left: 15px;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: none;
+        }
+        
+        .btn-login {
+            background-color: var(--secondary-color);
+            border: none;
+            color: white;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 5px;
+        }
+        
+        .forgot-password {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 20px;
+            }
+            
+            .form-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .forgot-password {
+                margin-top: 10px;
+            }
+        }
+    </style>
 </head>
-<body class="inner_page login">
-    <div class="full_container">
-        <div class="container">
-            <div class="center verticle_center full_height">
-                <div class="login_section">
-                    <div class="logo_login">
-                        <div class="center">
-                            <h2 style="color: #fff;">Fair Law Firm</h2>
-                        </div>
-                    </div>
-                    <div class="login_form">
-                        <?php 
-                        // Display error message if exists
-                        if (!empty($error_message)) : ?>
-                            <div class="alert alert-danger">
-                                <?php echo htmlspecialchars($error_message); ?>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <?php 
-                        // Display success message if exists
-                        if (!empty($_SESSION['success_message'])) : ?>
-                            <div class="alert alert-success">
-                                <?php 
-                                echo htmlspecialchars($_SESSION['success_message']); 
-                                unset($_SESSION['success_message']);
-                                ?>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <form method="POST" action="">
-                            <fieldset>
-                                <div class="field">
-                                    <label class="label_field">Email</label>
-                                    <input type="email" name="email" placeholder="Email" required />
-                                </div>
-                                <div class="field">
-                                    <label class="label_field">Password</label>
-                                    <input type="password" name="password" placeholder="Password" required />
-                                </div>
-                                <div class="field">
-                                    <label class="form-check-label">
-                                    <input type="checkbox" name="remember" class="form-check-input"> Remember Me
-                                    </label>
-                                    <a class="forgot" href="forgot_password.php">Forgotten Password?</a>
-                                </div>
-                                <div class="field margin_0">
-                                    <button type="submit" class="main_bt">Login</button>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <a href="welcome">
+                    <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="firdip HTML" height="60" width="200">
+                </a>
+                <!-- <h2>Fair Law Firm</h2> -->
             </div>
+            
+            <?php if (!empty($error_message)) : ?>
+                <div class="alert alert-danger">
+                    <?php echo htmlspecialchars($error_message); ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($_SESSION['success_message'])) : ?>
+                <div class="alert alert-success">
+                    <?php 
+                    echo htmlspecialchars($_SESSION['success_message']); 
+                    unset($_SESSION['success_message']);
+                    ?>
+                </div>
+            <?php endif; ?>
+            
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-footer">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="forgot_password.php" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-login mt-3">Login</button>
+            </form>
         </div>
     </div>
+    
+    <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -108,7 +108,7 @@
                                 </ul>
                             </li>
                             <li class="">
-                                <a href="hdjhjs"><?= __('Blog')?></a>
+                                <a href="blog"><?= __('Blog')?></a>
                             </li>
                             <li>
                                 <a href="contact"><?= __('Contact')?></a>

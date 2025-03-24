@@ -1,8 +1,6 @@
 <?php
-// session_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
-
 
 if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
@@ -49,6 +47,14 @@ $stmt->execute();
 $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
+<style>
+.table .thead-dark th {
+    color: #fff;
+    background-color: #15283c;
+    border-color: #32383e;
+}
+</style>
+
 <div class="row column1">
     <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
@@ -94,7 +100,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <th>Image</th>
                                             <th>Title</th>
                                             <th>Type</th>
-                                            <th>Status</th>
+                                            <th>Property Status</th>
                                             <th>Price</th>
                                             <th>Bed/Bath</th>
                                             <th>Actions</th>
@@ -110,12 +116,18 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <td><?php echo htmlspecialchars($row['title']); ?></td>
                                                     <td><?php echo htmlspecialchars($row['property_type']); ?></td>
                                                     <td>
-                                                        <span class="badge <?php echo ($row['property_status'] == 'For Rent') ? 'badge-success' : 'badge-secondary'; ?>">
+                                                    <span class="badge <?php echo ($row['property_status'] == 'For Rent') ? 'badge-success' : (($row['property_status'] == 'For Sale') ? 'badge-warning' : 'badge-secondary'); ?>">
                                                             <?php echo htmlspecialchars($row['property_status']); ?>
                                                         </span>
                                                     </td>
                                                     <td>$<?php echo number_format($row['price'], 2); ?></td>
-                                                    <td><?php echo htmlspecialchars($row['bedroom']); ?> / <?php echo htmlspecialchars($row['bathroom']); ?></td>
+                                                    <td>
+                                                        <?php if ($row['property_type'] !== 'Commercial Building'): ?>
+                                                            <?php echo htmlspecialchars($row['bedroom']); ?> / <?php echo htmlspecialchars($row['bathroom']); ?>
+                                                        <?php else: ?>
+                                                            <?php echo htmlspecialchars($row['floor']); ?>
+                                                        <?php endif; ?>
+                                                    </td>
                                                     <td>
                                                         <a href="property_details.php?id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm" title="View Details">
                                                             <i class="fa fa-eye"></i>

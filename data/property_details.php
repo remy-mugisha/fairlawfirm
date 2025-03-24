@@ -1,5 +1,4 @@
 <?php
-// session_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -52,6 +51,9 @@ if (!$property) {
                                         <h3 class="property-title"><?php echo htmlspecialchars($property['title']); ?></h3>
                                         
                                         <div class="property-meta mb-4">
+                                            <span class="badge <?php echo ($property['status'] == 'Active') ? 'badge-success' : (($property['status'] == 'Inactive') ? 'badge-danger' : 'badge-warning'); ?> mr-2">
+                                                <?php echo htmlspecialchars($property['status']); ?>
+                                            </span>
                                             <span class="badge <?php echo ($property['property_status'] == 'For Rent') ? 'badge-success' : 'badge-secondary'; ?> mr-2">
                                                 <?php echo htmlspecialchars($property['property_status']); ?>
                                             </span>
@@ -61,15 +63,26 @@ if (!$property) {
                                         
                                         <div class="property-features mb-4">
                                             <div class="row">
+                                                <?php if ($property['property_type'] !== 'Commercial Building'): ?>
                                                 <div class="col-6">
                                                     <p><i class="fa fa-bed mr-2"></i> <strong>Bedrooms:</strong> <?php echo htmlspecialchars($property['bedroom']); ?></p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p><i class="fa fa-bath mr-2"></i> <strong>Bathrooms:</strong> <?php echo htmlspecialchars($property['bathroom']); ?></p>
                                                 </div>
+                                                <?php else: ?>
+                                                <div class="col-12">
+                                                    <p><i class="fa fa-building mr-2"></i> <strong>Floor:</strong> <?php echo htmlspecialchars($property['floor']); ?></p>
+                                                </div>
+                                                <?php endif; ?>
                                                 <div class="col-12">
                                                     <p><i class="fa fa-ruler-combined mr-2"></i> <strong>Size:</strong> <?php echo htmlspecialchars($property['property_size']); ?> sq ft</p>
                                                 </div>
+                                                <?php if ($property['property_status'] !== 'For Sale' && !empty($property['months'])): ?>
+                                                <div class="col-12">
+                                                    <p><i class="fa fa-calendar mr-2"></i> <strong>Months:</strong> <?php echo htmlspecialchars($property['months']); ?> Months</p>
+                                                </div>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                         
@@ -91,7 +104,7 @@ if (!$property) {
                                 <div class="col-md-12 mt-4">
                                     <div class="property-description">
                                         <h5>Description</h5>
-                                        <p><?php echo nl2br(htmlspecialchars($property['description'])); ?></p>
+                                        <p class="description-text"><?php echo nl2br(htmlspecialchars($property['description'])); ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -104,41 +117,11 @@ if (!$property) {
 </div>
 
 <style>
-.property-image img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-}
-
-.property-title {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.property-meta .badge {
-    font-size: 14px;
-    padding: 5px 10px;
-}
-
-.property-price {
-    font-size: 18px;
-    font-weight: 600;
-    color: #28a745;
-}
-
-.property-features p {
-    margin-bottom: 10px;
-}
-
-.property-address p {
-    color: #666;
-}
-
-@media (max-width: 768px) {
-    .property-image {
-        margin-bottom: 20px;
-    }
+.description-text {
+    max-height: 150px; /* Adjust the height as needed */
+    overflow-y: auto; /* Adds a scrollbar if the content overflows */
+    word-wrap: break-word; /* Ensures long words do not overflow */
+    white-space: pre-wrap; /* Preserves line breaks and spaces */
 }
 </style>
               

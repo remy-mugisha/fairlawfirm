@@ -24,7 +24,7 @@ $lang = [
     'Error'=>'Erreur',
 
     // Start Section
-    'Propert Management & Legal Services'=>'Gestion immobilière et services juridiques',
+    'Property Management & Legal Services'=>'Gestion immobilière et services juridiques',
     'We help clients with legal issues and manage property rentals and sales efficiently.'=>'Nous aidons nos clients à résoudre leurs problèmes juridiques et gérons efficacement les locations et les ventes de propriétés.',
     'Contact Us'=>'Contactez-nous',
 

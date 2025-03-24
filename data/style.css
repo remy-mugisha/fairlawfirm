@@ -688,7 +688,9 @@ a:focus {
 }
 
 .icon_info ul li a img {
-    width: 35px;
+    /* width: 35px; */
+    width: 50px;
+    height: 50px;
 }
 
 .icon_info ul.user_profile_dd li {
@@ -698,14 +700,14 @@ a:focus {
 .icon_info ul.user_profile_dd>li span {
     font-size: 13px;
     font-weight: 500;
-    color: #fff;
-    padding: 0 35px 0 10px;
+    color: #15283c;
+    padding: 0 15px 0 5px;
 }
 
 .icon_info ul.user_profile_dd li>a::after {
-    color: #fff;
-    top: 13px;
-    right: 28px;
+    color: #15283c;
+    top: 7px;
+    right: 10px;
     display: block;
     position: absolute;
     transform: translateY(-50%);
@@ -727,9 +729,9 @@ a:focus {
 .icon_info ul.user_profile_dd>li {
     width: auto;
     border-radius: 0;
-    background: #232728;
+    /* background: #232728; */
     margin: 0;
-    padding: 12px 0 12px 20px;
+    /* padding: 12px 0 12px 20px; */
     height: auto;
 }
 
@@ -737,7 +739,7 @@ a:focus {
     border: none;
     padding: 14px 26px 14px;
     font-size: 21px;
-    background: #232728;
+    background: #15283c;
     margin-right: 0;
     cursor: pointer;
     float: left;
@@ -830,12 +832,12 @@ span {
 #sidebar {
     min-width: 280px;
     max-width: 280px;
-    background-color: #198754;
-    color: #fff;
+    background-color: #fff;
+    color: #452121;
     transition: all 0.3s;
     position: relative;
     z-index: 11;
-    box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 1px 0px rgba(0, 0, 0, 0.4);
     float: left;
     width: 100%;
     /* background-image: url('images/layout_img/pattern_h.png'); */
@@ -871,13 +873,13 @@ span {
     padding: 15px 25px;
     display: block;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.9);
+    color: #15283c;
     font-weight: 300;
 }
 
 #sidebar ul li a:hover,
 #sidebar ul li a:focus {
-    color: rgba(255, 255, 255, 0.95);
+    color: #198754;
 }
 
 #sidebar ul.components li {
@@ -950,9 +952,11 @@ a[data-toggle="collapse"] {
 
 .topbar .navbar {
     padding: 0;
-    background: #198754;
+    background: #fff;
     border: none;
     border-radius: 0;
+    box-shadow: 0 0 1px 0px rgba(0, 0, 0, 0.4);
+
 }
 
 .user_profle_side {
@@ -1055,12 +1059,12 @@ a[data-toggle="collapse"] {
 }
 
 #sidebar h4 {
-    background: #198754;
+    background: #fff;
     margin: 0;
     padding: 21px 25px 19px;
     font-weight: 500;
     font-size: 18px;
-    color: #fff;
+    color: #ffffff;
     border-bottom: solid #232728 1px;
 }
 

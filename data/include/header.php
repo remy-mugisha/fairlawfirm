@@ -66,43 +66,33 @@ if(!isset($_SESSION["email"])){
                   </div> -->
                </div>
                <div class="sidebar_blog_2">
-                  <h4>Fair Law Firm LTD</h4>
-                  <ul class="user_profile_dd">
-    <li>
-    <a class="dropdown-toggle" data-toggle="dropdown">
-    <?php if (!empty($_SESSION['profile_image'])): ?>
-        <img class="img-responsive rounded-circle profile-image" src="<?php echo htmlspecialchars($_SESSION['profile_image']); ?>" alt="Profile Image" />
-    <?php else: ?>
-        <img class="img-responsive rounded-circle profile-image" src="images/default-avatar.png" alt="Default Avatar" />
-    <?php endif; ?>
-    <span class="name_user"><?php echo htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']); ?></span>
-</a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="profile.php">My Profile</a>
-            <a class="dropdown-item" href="logout.php"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
-        </div>
-    </li>
-</ul>
+                  <!-- <h4>Fair Law Firm LTD</h4> -->
+                  <a href="welcome">
+                     <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="firdip HTML" height="60" width="200">
+                  </a>
                   <ul class="list-unstyled components">
                      <li class="active">
-                        <a href="dashboard"><i class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a>
+                        <a href="dashboard"><i class="fa fa-dashboard "></i> <span>Dashboard</span></a>
                      </li>
                      <!-- <li>
                         <a href="manage_users">
                         <i class="fa fa-briefcase blue1_color"></i> <span>Manage Users</span></a>
                      </li> -->
+                     <!-- <li><a href="home_background"><i class="fa fa-newspaper-o blue1_color"></i> <span> Home</span></a></li> -->
                      
                      <li>
                         <a href="display_properties">
-                        <i class="fa fa-briefcase blue1_color"></i> <span>Add Manage Properties</span></a>
+                        <i class="fa fa-building fa-cog"></i> <span> Manage Properties</span></a>
                      </li>
                      <li>
                         <a href="display_rental">
-                        <i class="fa fa-plus blue1_color"></i> <span>Add Rental House</span></a>
+                        <i class="fa fa-home fa-cog"></i> <span> Rental House</span></a>
                      </li>
-                     <!-- <li><a href="#"><i class="fa fa-newspaper-o blue1_color"></i> <span>Add Blog</span></a></li> -->
+                     <li><a href="display_blog"><i class="fa fa-newspaper-o "></i> <span> Blog</span></a></li>
+                     <li><a href="display_about"><i class="fa fa-info-circle"></i> <span> About</span></a></li>
+                     <li><a href="add_video.php"><i class="fa fa-play-circle " ></i> <span> Videos</span></a></li>
                      <li class="active">
-                        <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-table purple_color2"></i> <span>Show Tables</span></a>
+                        <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-table"></i> <span>Show Tables</span></a>
                         <ul class="collapse list-unstyled" id="additional_page">
                            <li>
                               <a href="display_properties">> <span>Manage Properties</span></a>
@@ -116,9 +106,9 @@ if(!isset($_SESSION["email"])){
                         </ul>
                      </li>
                      <?php if ($_SESSION['user_type'] == 'admin'): ?>
-                            <li><a href="manage_users.php"><i class="fa fa-users yellow_color"></i> <span>Manage Users</span></a></li>
+                            <li><a href="manage_users.php"><i class="fa fa-users "></i> <span>Manage Users</span></a></li>
                      <?php endif; ?>
-                     <li><a href="#"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>
+                     <li><a href="#"><i class="fa fa-cog "></i> <span>Settings</span></a></li>
                      <!-- <li><a href="logout.php"><i class=""></i> <span>Logout</span></a></li> -->
                   </ul>
                </div>
@@ -136,11 +126,22 @@ if(!isset($_SESSION["email"])){
                         </div> -->
                         <div class="right_topbar">
                            <div class="icon_info">
-                              <ul>
-                                 <li><a href="#"><i class="fa fa-bell-o"></i><span class="badge">2</span></a></li>
-                                 <li><a href="#"><i class="fa fa-question-circle"></i></a></li>
-                                 <li><a href="#"><i class="fa fa-envelope-o"></i><span class="badge">3</span></a></li>
-                              </ul>
+                           <ul class="user_profile_dd">
+    <li>
+    <a class="dropdown-toggle" data-toggle="dropdown">
+    <?php if (!empty($_SESSION['profile_image'])): ?>
+        <img class="img-responsive rounded-circle profile-image" src="<?php echo htmlspecialchars($_SESSION['profile_image']); ?>" alt="Profile Image" />
+    <?php else: ?>
+        <img class="img-responsive rounded-circle profile-image" src="images/default-avatar.png" alt="Default Avatar" />
+    <?php endif; ?>
+    <span class="name_user"><?php echo htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']); ?></span>
+</a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="profile.php">My Profile</a>
+            <a class="dropdown-item" href="logout.php"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
+        </div>
+    </li>
+</ul>
                            </div>
                         </div>
                      </div>
@@ -155,4 +156,5 @@ if(!isset($_SESSION["email"])){
                      object-fit: cover; 
                      border-radius: 50%; 
                      }
+
                </style>   

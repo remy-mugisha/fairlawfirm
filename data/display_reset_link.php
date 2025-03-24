@@ -1,8 +1,5 @@
 <?php
-// display_reset_link.php - Display the reset link during local development
 session_start();
-
-// Redirect if no reset link is set or if not in development environment
 if (!isset($_SESSION['reset_link']) || ($_SERVER['SERVER_NAME'] != 'localhost' && $_SERVER['SERVER_NAME'] != '127.0.0.1')) {
     header("Location: index");
     exit();

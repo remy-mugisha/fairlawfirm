@@ -1,5 +1,4 @@
 <?php
-// session_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -16,17 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
     
     try {
         if (!empty($_FILES['image']['name'])) {
-            // Get the old image path
             $stmt = $conn->prepare("SELECT image FROM add_property WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             $property = $stmt->fetch(PDO::FETCH_ASSOC);
-            $oldImagePath = $property['image'];
-            
-            // Set the correct target directory
+            $oldImagePath = $property['image'];            
             $targetDir = "propertyMgt/proImg/";
             
-            // Make sure the directory exists
             if (!file_exists($targetDir)) {
                 mkdir($targetDir, 0777, true);
             }
@@ -38,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
             $allowTypes = array('jpg', 'jpeg', 'png', 'gif');
             if (in_array(strtolower($fileType), $allowTypes)) {
                 if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                    // Store only the filename in the database, not the full path
                     $imageDbPath = time() . '_' . $fileName;
                     
                     $stmt = $conn->prepare("UPDATE add_property SET image = :image, location = :location, title = :title WHERE id = :id");
@@ -48,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
                     $stmt->bindParam(':id', $id);
                     $stmt->execute();
                     
-                    // Delete the old image if it exists
                     if (!empty($oldImagePath) && file_exists("propertyMgt/proImg/" . $oldImagePath)) {
                         unlink("propertyMgt/proImg/" . $oldImagePath);
                     }

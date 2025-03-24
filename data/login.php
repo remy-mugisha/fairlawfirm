@@ -1,35 +1,24 @@
 <?php
 session_start();
 
-// Use the existing config file for database connection
 require_once 'propertyMgt/config.php';
 
-// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize and validate input
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
 
-    // Prepare a parameterized query to prevent SQL injection
     $stmt = mysqli_prepare($data, "SELECT * FROM login WHERE email = ?");
     mysqli_stmt_bind_param($stmt, "s", $email);
     
     try {
-        // Execute the query
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $user = mysqli_fetch_assoc($result);
-
-        // Verify password 
         if ($user) {
-            // Here you would typically use password_verify() with hashed passwords
-            // For now, we'll do a simple comparison (IMPORTANT: use password hashing in production!)
             if ($password === $user['password']) {
-                // Start session and store user type
                 $_SESSION['user_type'] = $user['usertype'];
                 $_SESSION['email'] = $user['email'];
 
-                // Redirect based on user type
                 if ($user['usertype'] == 'admin') {
                     header("Location: admin_dashboard.php");
                     exit();
@@ -70,7 +59,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="login_form">
                         <?php 
-                        // Display error message if exists
                         if (!empty($error_message)) : ?>
                             <div class="alert alert-danger">
                                 <?php echo htmlspecialchars($error_message); ?>

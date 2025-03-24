@@ -1,18 +1,14 @@
 <?php
-// Start output buffering
 ob_start();
 
-// Include necessary files
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
-// Check if the user is an admin
 if ($_SESSION['user_type'] !== 'admin') {
     header("Location: index.php");
     exit();
 }
 
-// Fetch user details for editing
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     try {
@@ -39,7 +35,6 @@ if (isset($_GET['id'])) {
     exit();
 }
 
-// Handle form submission for updating user
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_name = filter_var($_POST['first_name'], FILTER_SANITIZE_STRING);
     $last_name = filter_var($_POST['last_name'], FILTER_SANITIZE_STRING);
@@ -50,13 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
     
     try {
-        // Begin transaction
         $conn->beginTransaction();
 
-        // Temporarily disable foreign key checks (if supported by your database)
         $conn->exec("SET FOREIGN_KEY_CHECKS=0");
 
-        // Check if email changed and if it's already in use
         if ($email !== $user['email']) {
             $check_email = $conn->prepare("SELECT email FROM login WHERE email = :email AND email != :current_email");
             $check_email->bindParam(':email', $email);
@@ -67,21 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new Exception("Email already exists");
             }
             
-            // Update email in login table first (parent table)
             $update_login = $conn->prepare("UPDATE login SET email = :new_email WHERE email = :old_email");
             $update_login->bindParam(':new_email', $email);
             $update_login->bindParam(':old_email', $user['email']);
             $update_login->execute();
         }
         
-        // Update user type in login table if role changed
         $new_usertype = ($role_id == 1) ? 'admin' : 'user';
         $update_usertype = $conn->prepare("UPDATE login SET usertype = :usertype WHERE email = :email");
         $update_usertype->bindParam(':usertype', $new_usertype);
         $update_usertype->bindParam(':email', $email);
         $update_usertype->execute();
         
-        // Update user details in users table (child table)
         $stmt = $conn->prepare("UPDATE users 
                                 SET first_name = :first_name, 
                                     last_name = :last_name, 
@@ -101,45 +90,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         
-        // Handle profile image update if provided
         if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
             $upload_dir = 'uploads/';
             
-            // Create directory if it doesn't exist
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
             
-            // Generate unique filename
             $file_extension = pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
             $filename = uniqid() . '.' . $file_extension;
             $target_file = $upload_dir . $filename;
             
-            // Check if file is an image
             $check = getimagesize($_FILES['profile_image']['tmp_name']);
             if ($check === false) {
                 throw new Exception("File is not an image");
             }
             
-            // Check file size (limit to 5MB)
             if ($_FILES['profile_image']['size'] > 5000000) {
                 throw new Exception("File is too large (max 5MB)");
             }
             
-            // Allow certain file formats
             $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
             if (!in_array(strtolower($file_extension), $allowed_extensions)) {
                 throw new Exception("Only JPG, JPEG, PNG & GIF files are allowed");
             }
             
-            // Move uploaded file
             if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
-                // Delete old image if exists
                 if (!empty($user['profile_image']) && file_exists($user['profile_image'])) {
                     unlink($user['profile_image']);
                 }
                 
-                // Update profile image in database
                 $update_image = $conn->prepare("UPDATE users SET profile_image = :profile_image WHERE id = :id");
                 $update_image->bindParam(':profile_image', $target_file);
                 $update_image->bindParam(':id', $id);
@@ -149,20 +129,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         
-        // Re-enable foreign key checks
         $conn->exec("SET FOREIGN_KEY_CHECKS=1");
 
-        // Commit transaction
         $conn->commit();
         
         $_SESSION['success_message'] = "User updated successfully!";
         header("Location: manage_users.php");
         exit();
     } catch(Exception $e) {
-        // Rollback transaction on error
         $conn->rollback();
         
-        // Re-enable foreign key checks in case of error
         $conn->exec("SET FOREIGN_KEY_CHECKS=1");
 
         $_SESSION['error_message'] = "Error updating user: " . $e->getMessage();
@@ -171,7 +147,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Fetch roles for dropdown
 try {
     $stmt = $conn->query("SELECT * FROM roles");
     $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -179,8 +154,6 @@ try {
     $error = "Error fetching roles: " . $e->getMessage();
 }
 ?>
-
-<!-- Rest of your HTML form remains the same -->
 
 <div class="row column1">
     <div class="col-md-12">
@@ -274,6 +247,5 @@ try {
 
 <?php
 require_once 'include/footer.php';
-// End output buffering and send the output to the browser
 ob_end_flush();
 ?>

@@ -1,5 +1,4 @@
 <?php
-// session_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -11,7 +10,6 @@ if (isset($_GET['delete'])) {
         $stmt->execute();
         $property = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // Delete the image file if it exists
         if ($property && !empty($property['image']) && file_exists("propertyMgt/proImg/" . $property['image'])) {
             unlink("propertyMgt/proImg/" . $property['image']);
         }
@@ -35,6 +33,14 @@ try {
     $error = "Error fetching properties: " . $e->getMessage();
 }
 ?>
+
+<style>
+.table .thead-dark th {
+    color: #fff;
+    background-color: #15283c;
+    border-color: #32383e;
+}
+</style>
 
 <div class="row column1">
     <div class="col-md-12">

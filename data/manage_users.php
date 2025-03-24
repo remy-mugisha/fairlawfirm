@@ -1,42 +1,33 @@
 <?php
-// Start output buffering at the very beginning
 ob_start();
 
-// Include necessary files
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
-// Check if the user is an admin
 if ($_SESSION['user_type'] !== 'admin') {
     header("Location: index.php");
     exit();
 }
 
-// Handle delete request
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
     try {
-        // Begin transaction
         $conn->beginTransaction();
         
-        // First delete from users table
         $stmt = $conn->prepare("DELETE FROM users WHERE id = :id");
         $stmt->bindParam(':id', $delete_id);
         $stmt->execute();
         
-        // Then delete from login table
         $stmt = $conn->prepare("DELETE FROM login WHERE email = (SELECT email FROM users WHERE id = :id)");
         $stmt->bindParam(':id', $delete_id);
         $stmt->execute();
         
-        // Commit transaction
         $conn->commit();
         
         $_SESSION['success_message'] = "User deleted successfully!";
         header("Location: manage_users");
         exit();
     } catch(PDOException $e) {
-        // Rollback transaction on error
         $conn->rollback();
         
         $_SESSION['error_message'] = "Error deleting user: " . $e->getMessage();
@@ -45,7 +36,6 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// Fetch all users from the database
 try {
     $stmt = $conn->query("SELECT u.*, r.role_name 
                           FROM users u 
@@ -56,8 +46,14 @@ try {
     $error = "Error fetching users: " . $e->getMessage();
 }
 ?>
+<style>
+.table .thead-dark th {
+    color: #fff;
+    background-color: #15283c;
+    border-color: #32383e;
+}
+</style>
 
-<!-- Rest of your HTML content -->
 <div class="row column1">
     <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
@@ -142,7 +138,6 @@ try {
                                     </td>
                                 </tr>
 
-                                <!-- View User Modal -->
                                 <div class="modal fade" id="viewUserModal<?php echo $user['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="viewUserModalLabel<?php echo $user['id']; ?>" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
@@ -185,7 +180,6 @@ try {
                                         </div>
                                     </div>
                                 </div>
-                                <!-- End View User Modal -->
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -199,6 +193,5 @@ try {
 <?php
 require_once 'include/footer.php';
 
-// End output buffering and send the output to the browser
 ob_end_flush();
 ?>
