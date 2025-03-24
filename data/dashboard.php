@@ -38,9 +38,9 @@ $rentalProperties = getCount($conn, "properties", "property_status = 'For Rent'"
                                     <div class="col-md-4">
                                         <div class="stat-card text-white">
                                             <div class="stat-card-inner">
-                                                <h5 style="color: #17a2b8;">Total Users</h5>
+                                                <h5 style="color: #17a2b8;">Total Employers</h5>
                                                 <h2 style="color: #17a2b8;"><?php echo $userCount; ?></h2>
-                                                <p>Registered active users</p>
+                                                <p>Registered active Employers</p>
                                             </div>
                                         </div>
                                     </div>

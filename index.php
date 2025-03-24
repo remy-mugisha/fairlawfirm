@@ -242,15 +242,33 @@ try {
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-5">
-                    <div class="cta-one__left">
-                        <div class="cta-one__video">
-                            <a href="" class="cta-one__video__icon video_play video-popup">
-                                <i class="icon-polygon"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <?php
+require_once 'data/propertyMgt/config.php';
+
+// Fetch the latest active video link
+try {
+    $stmt = $conn->prepare("SELECT video_link FROM videos WHERE status = 'active' ORDER BY created_at DESC LIMIT 1");
+    $stmt->execute();
+    $video = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $video = null;
+}
+?>
+
+<div class="col-lg-5"> 
+    <div class="cta-one__left">
+        <div class="cta-one__video">
+            <?php if ($video): ?>
+                <a href="<?php echo htmlspecialchars($video['video_link']); ?>" class="cta-one__video__icon video_play video-popup">
+                    <i class="icon-polygon"></i>
+                </a>
+            <?php else: ?>
+                <p>No active video available.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
             </div>
         </div>
     </section>

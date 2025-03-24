@@ -37,7 +37,7 @@ try {
         <label for="video_link">Video Link</label>
         <input type="text" class="form-control" id="video_link" name="video_link" placeholder="Enter video link" required>
     </div>
-    <button type="submit" class="btn btn-primary">Add Video Link</button>
+    <button type="submit" class="btn btn-info">Add Video Link</button>
 </form>
 
 <!-- Video Links Table -->

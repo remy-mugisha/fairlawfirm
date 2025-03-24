@@ -192,6 +192,5 @@ try {
 
 <?php
 require_once 'include/footer.php';
-
 ob_end_flush();
 ?>

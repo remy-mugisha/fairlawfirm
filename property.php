@@ -77,7 +77,7 @@
     <?php
     require_once 'data/propertyMgt/config.php';
 
-    $propertiesPerPage = 6;
+    $propertiesPerPage = 9;
 
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 

@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         
         if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = 'uploads/';
+            $upload_dir = 'propertyMgt/userImg/';
             
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
@@ -198,13 +198,28 @@ try {
                     </div>
                     <div class="field">
                         <label class="label_field">Gender</label>
-                        <div class="radio_option">
-                            <input type="radio" name="gender" id="male" value="Male" <?php echo ($user['gender'] == 'Male') ? 'checked' : ''; ?> class="form-check-input">
-                            <label for="male" class="form-check-label">Male</label>
-                            <input type="radio" name="gender" id="female" value="Female" <?php echo ($user['gender'] == 'Female') ? 'checked' : ''; ?> class="form-check-input">
-                            <label for="female" class="form-check-label">Female</label>
-                            <input type="radio" name="gender" id="other" value="Other" <?php echo ($user['gender'] == 'Other') ? 'checked' : ''; ?> class="form-check-input">
-                            <label for="other" class="form-check-label">Other</label>
+                        <div class="radio_group">
+                            <div class="radio_option">
+                                <input type="radio" name="gender" id="male" value="Male" <?php echo ($user['gender'] == 'Male') ? 'checked' : ''; ?> class="radio_input">
+                                <label for="male" class="radio_label">
+                                    <span class="radio_custom"></span>
+                                    Male
+                                </label>
+                            </div>
+                            <div class="radio_option">
+                                <input type="radio" name="gender" id="female" value="Female" <?php echo ($user['gender'] == 'Female') ? 'checked' : ''; ?> class="radio_input">
+                                <label for="female" class="radio_label">
+                                    <span class="radio_custom"></span>
+                                    Female
+                                </label>
+                            </div>
+                            <div class="radio_option">
+                                <input type="radio" name="gender" id="other" value="Other" <?php echo ($user['gender'] == 'Other') ? 'checked' : ''; ?> class="radio_input">
+                                <label for="other" class="radio_label">
+                                    <span class="radio_custom"></span>
+                                    Other
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="field">
@@ -237,7 +252,7 @@ try {
                         <small class="text-muted">Leave empty to keep the current image</small>
                     </div>
                     <div class="field margin_0">
-                        <button type="submit" class="btn btn-primary btn-block">Update User</button>
+                        <button type="submit" class="btn btn-info btn-block">Update User</button>
                     </div>
                 </form>
             </div>
@@ -249,3 +264,120 @@ try {
 require_once 'include/footer.php';
 ob_end_flush();
 ?>
+
+<style>
+.white_shd {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.label_field {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Radio button styles */
+.radio_group {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.radio_option {
+    display: flex;
+    align-items: center;
+}
+
+.radio_input {
+    position: absolute;
+    opacity: 0;
+}
+
+.radio_label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-weight: normal;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.radio_custom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.radio_input:checked ~ .radio_label .radio_custom {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.radio_input:checked ~ .radio_label .radio_custom::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+}
+
+.radio_input:focus ~ .radio_label .radio_custom {
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.2);
+}
+
+.btn-block {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-block:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+@media (max-width: 768px) {
+    .white_shd {
+        padding: 15px;
+    }
+
+    .radio_group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .field {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .white_shd {
+        padding: 10px;
+    }
+
+    .btn-block {
+        font-size: 14px;
+    }
+}
+</style>

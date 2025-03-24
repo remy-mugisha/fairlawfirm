@@ -133,7 +133,7 @@ try {
                                 </div>                               
                                 <div class="form-group row">
                                     <div class="col-sm-9 offset-sm-3">
-                                        <button type="submit" name="update" class="btn btn-primary">Update Property</button>
+                                        <button type="submit" name="update" class="btn btn-info">Update Property</button>
                                         <a href="display_properties.php" class="btn btn-secondary ml-2">Cancel</a>
                                     </div>
                                 </div>

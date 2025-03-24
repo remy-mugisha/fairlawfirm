@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="Pending" <?php echo ($about['status'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-info">Update</button>
                 </form>
             </div>
         </div>

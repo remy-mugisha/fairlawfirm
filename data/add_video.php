@@ -1,7 +1,6 @@
 <?php
-ob_start(); // Start output buffering
-// session_start();
-require_once 'include/header.php';
+ob_start();
+require_once 'include/header.php'; // session_start() is inside this
 require_once 'propertyMgt/config.php';
 
 // Handle Delete Action
@@ -16,6 +15,7 @@ if (isset($_GET['delete'])) {
     } catch(PDOException $e) {
         $_SESSION['error_message'] = "Error deleting video link: " . $e->getMessage();
     }
+    session_write_close(); // Ensure session data is saved
     header("Location: add_video.php");
     exit();
 }
@@ -30,6 +30,7 @@ if (isset($_GET['edit'])) {
         $edit_video = $stmt->fetch(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
         $_SESSION['error_message'] = "Error fetching video link: " . $e->getMessage();
+        session_write_close();
         header("Location: add_video.php");
         exit();
     }
@@ -38,14 +39,12 @@ if (isset($_GET['edit'])) {
 // Handle Form Submission (Add or Update)
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $video_link = $_POST['video_link'];
-    $status = $_POST['status'] ?? 'pending'; // Default to 'pending' if status is not provided
-    $id = $_POST['id'] ?? null; // ID is only present when editing
+    $status = $_POST['status'] ?? 'pending';
+    $id = $_POST['id'] ?? null;
 
     try {
         if ($id) {
-            // Update existing video link
             if ($status == 'active') {
-                // Set all other videos to pending
                 $stmt = $conn->prepare("UPDATE videos SET status = 'pending' WHERE id != :id");
                 $stmt->bindParam(':id', $id);
                 $stmt->execute();
@@ -59,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             $_SESSION['success_message'] = "Video link updated successfully!";
         } else {
-            // Insert new video link
             $stmt = $conn->prepare("INSERT INTO videos (video_link, status) VALUES (:video_link, :status)");
             $stmt->bindParam(':video_link', $video_link);
             $stmt->bindParam(':status', $status);
@@ -71,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['error_message'] = "Error: " . $e->getMessage();
     }
 
+    session_write_close(); // Ensure session data is saved
     header("Location: add_video.php");
     exit();
 }
@@ -86,17 +85,18 @@ try {
 ?>
 
 <!-- Display Success/Error Messages -->
-<?php if (isset($_SESSION['success_message'])): ?>
+<?php if (!empty($_SESSION['success_message'])): ?>
     <div class="alert alert-success">
         <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
     </div>
 <?php endif; ?>
 
-<?php if (isset($_SESSION['error_message'])): ?>
+<?php if (!empty($_SESSION['error_message'])): ?>
     <div class="alert alert-danger">
         <?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
     </div>
 <?php endif; ?>
+
 
 <!-- Add/Edit Video Link Form -->
 <form method="POST" action="add_video.php">

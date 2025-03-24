@@ -34,20 +34,15 @@
                     <?php
                     require 'data/propertyMgt/config.php';
 
-                    // Number of items per page
-                    $itemsPerPage = 6;
+                    $itemsPerPage = 9;
 
-                    // Get the current page number from the URL
                     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     $offset = ($page - 1) * $itemsPerPage;
 
-                    // Fetch total number of active blog posts
                     $totalPosts = $conn->query("SELECT COUNT(*) FROM blog WHERE status = 'active'")->fetchColumn();
 
-                    // Calculate total number of pages
                     $totalPages = ceil($totalPosts / $itemsPerPage);
 
-                    // Fetch active blog posts for the current page
                     $selectAllUsers = $conn->prepare("SELECT * FROM blog WHERE status = 'active' ORDER BY date DESC LIMIT :limit OFFSET :offset");
                     $selectAllUsers->bindValue(':limit', $itemsPerPage, PDO::PARAM_INT);
                     $selectAllUsers->bindValue(':offset', $offset, PDO::PARAM_INT);

@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $profile_image = "";
         if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = 'uploads/';
+            $upload_dir = 'propertyMgt/userImg/';
             
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);

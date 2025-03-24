@@ -67,7 +67,7 @@ if(!isset($_SESSION["email"])){
                </div>
                <div class="sidebar_blog_2">
                   <!-- <h4>Fair Law Firm LTD</h4> -->
-                  <a href="welcome">
+                  <a href="dashboard">
                      <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="firdip HTML" height="60" width="200">
                   </a>
                   <ul class="list-unstyled components">

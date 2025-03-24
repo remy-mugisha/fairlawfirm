@@ -27,7 +27,7 @@
     require_once 'data/propertyMgt/config.php';
     
     // Pagination settings
-    $items_per_page = 6;
+    $items_per_page = 9;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $offset = ($page - 1) * $items_per_page;
     
