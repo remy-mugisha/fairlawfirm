@@ -195,9 +195,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <a href="welcome">
+                <!-- <a href="welcome"> -->
                     <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="firdip HTML" height="60" width="200">
-                </a>
+                <!-- </a> -->
                 <!-- <h2>Fair Law Firm</h2> -->
             </div>
             
