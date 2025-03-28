@@ -14,18 +14,30 @@ if (isset($_GET['delete'])) {
     try {
         $conn->beginTransaction();
         
-        $stmt = $conn->prepare("DELETE FROM users WHERE id = :id");
+        // Fetch the email before deleting the user
+        $stmt = $conn->prepare("SELECT email FROM users WHERE id = :id");
         $stmt->bindParam(':id', $delete_id);
         $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        $stmt = $conn->prepare("DELETE FROM login WHERE email = (SELECT email FROM users WHERE id = :id)");
-        $stmt->bindParam(':id', $delete_id);
-        $stmt->execute();
+        if ($user) {
+            $email = $user['email'];
+
+            // Delete user first
+            $stmt = $conn->prepare("DELETE FROM users WHERE id = :id");
+            $stmt->bindParam(':id', $delete_id);
+            $stmt->execute();
+
+            // Delete associated login record
+            $stmt = $conn->prepare("DELETE FROM login WHERE email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+        }
         
         $conn->commit();
         
         $_SESSION['success_message'] = "User deleted successfully!";
-        header("Location: manage_users");
+        header("Location: manage_users.php");
         exit();
     } catch(PDOException $e) {
         $conn->rollback();
@@ -35,6 +47,7 @@ if (isset($_GET['delete'])) {
         exit();
     }
 }
+
 
 try {
     $stmt = $conn->query("SELECT u.*, r.role_name 

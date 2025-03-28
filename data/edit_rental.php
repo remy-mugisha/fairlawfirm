@@ -1,6 +1,5 @@
 <?php
-ob_start(); // Start output buffering
-// session_start();
+ob_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -29,51 +28,29 @@ if (isset($_POST['submit'])) {
     $description = $_POST['description'];
     $property_status = trim($_POST['property_status']);
     $property_type = $_POST['property_type'];
-    $price = preg_replace('/[^0-9.]/', '', $_POST['price']);
-    $property_size = $_POST['property_size']; // Always include property size
-    $bedroom = ($property_type === 'Commercial Building') ? 0 : $_POST['bedroom']; // Default to 0 for Commercial Building
-    $bathroom = ($property_type === 'Commercial Building') ? 0 : $_POST['bathroom']; // Default to 0 for Commercial Building
+    // Replace the price processing with:
+    $price = trim($_POST['price']);
+
+    // Clean the price while preserving range format
+    if (preg_match('/(\d+)\s*(?:-|up to)\s*(\d+)/i', $price, $matches)) {
+        $price = $matches[1] . ' - ' . $matches[2];
+    } else {
+        // If single price, just clean it
+        $price = preg_replace('/[^0-9]/', '', $price);
+    }
+    $property_size = $_POST['property_size'];
+    $bedroom = ($property_type === 'Commercial Building') ? 0 : $_POST['bedroom'];
+    $bathroom = ($property_type === 'Commercial Building') ? 0 : $_POST['bathroom'];
     $street = $_POST['street'];
     $sector = $_POST['sector'];
     $district = $_POST['district'];
     $country = $_POST['country'];
     $status = $_POST['status'];
-    $floor = ($property_type === 'Commercial Building') ? $_POST['floor'] : null;
-
-    $image = $property['image'];
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $allowed = array('jpg', 'jpeg', 'png', 'gif');
-        $filename = $_FILES['image']['name'];
-        $filetype = pathinfo($filename, PATHINFO_EXTENSION);
-
-        if (in_array(strtolower($filetype), $allowed)) {
-            $new_filename = uniqid() . '.' . $filetype;
-            $upload_dir = 'propertyMgt/propertyImg/';
-
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $new_filename)) {
-                if ($property['image'] && file_exists($upload_dir . $property['image'])) {
-                    unlink($upload_dir . $property['image']);
-                }
-                $image = $new_filename;
-            } else {
-                $_SESSION['error_message'] = "Failed to upload image.";
-                header("Location: edit_rental.php?id=$id");
-                exit();
-            }
-        } else {
-            $_SESSION['error_message'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
-            header("Location: edit_rental.php?id=$id");
-            exit();
-        }
-    }
+    $floor = ($property_type === 'Commercial Building') ? implode(', ', $_POST['floor']) : null;
+    $months = ($property_status === 'For Sale') ? null : $_POST['months'];
 
     try {
         $query = "UPDATE properties SET 
-                  image = :image,
                   title = :title,
                   description = :description,
                   property_status = :property_status,
@@ -87,11 +64,11 @@ if (isset($_POST['submit'])) {
                   district = :district,
                   country = :country,
                   status = :status,
-                  floor = :floor
+                  floor = :floor,
+                  months = :months
                   WHERE id = :id";
 
         $stmt = $conn->prepare($query);
-        $stmt->bindParam(':image', $image);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':property_status', $property_status);
@@ -106,6 +83,7 @@ if (isset($_POST['submit'])) {
         $stmt->bindParam(':country', $country);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':floor', $floor);
+        $stmt->bindParam(':months', $months);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
@@ -125,8 +103,6 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
-<!-- Rest of your HTML and JavaScript code -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,24 +111,9 @@ if (isset($_POST['submit'])) {
     <title>Edit Rental Property</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .custom-file-label::after {
-            content: "Browse";
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .control-label {
-            font-weight: 500;
-            padding-top: 7px;
-        }
-        .padding_infor_info {
-            padding: 30px;
-        }
-        #imagePreview img {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-        }
+        .form-group { margin-bottom: 1.5rem; }
+        .control-label { font-weight: 500; padding-top: 7px; }
+        .padding_infor_info { padding: 30px; }
     </style>
 </head>
 <body>
@@ -166,7 +127,6 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
 
-                <!-- Success/Error Messages -->
                 <?php if (isset($_SESSION['success_message'])): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
@@ -185,27 +145,11 @@ if (isset($_POST['submit'])) {
                     </div>
                 <?php endif; ?>
 
-                <!-- Form -->
                 <div class="full progress_bar_inner">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="full padding_infor_info">
-                                <form class="form-horizontal" action="edit_rental.php?id=<?php echo htmlspecialchars($id); ?>" method="post" enctype="multipart/form-data">
-                                    <!-- Image Upload -->
-                                    <div class="form-group row">
-                                        <label class="control-label col-sm-3">Upload New Image</label>
-                                        <div class="col-sm-9">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="image" id="imageUpload" accept="image/*">
-                                                <label class="custom-file-label" for="imageUpload">Choose file</label>
-                                            </div>
-                                            <div class="mt-3" id="imagePreview">
-                                                <img src="propertyMgt/propertyImg/<?php echo htmlspecialchars($property['image']); ?>" alt="Current Image" class="img-fluid" style="max-height: 200px;">
-                                                <p class="mt-2 text-muted">Current image shown. Upload a new one to replace it.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <form class="form-horizontal" action="edit_rental.php?id=<?php echo htmlspecialchars($id); ?>" method="post">
                                     <!-- Title -->
                                     <div class="form-group row">
                                         <label class="control-label col-sm-3">Title</label>
@@ -226,10 +170,25 @@ if (isset($_POST['submit'])) {
                                     <div class="form-group row">
                                         <label class="control-label col-sm-3">Property Status</label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" name="property_status" required>
+                                            <select class="form-control" name="property_status" id="property_status" required>
                                                 <option value="For Rent" <?php echo ($property['property_status'] == 'For Rent') ? 'selected' : ''; ?>>For Rent</option>
                                                 <option value="For Sale" <?php echo ($property['property_status'] == 'For Sale') ? 'selected' : ''; ?>>For Sale</option>
                                                 <option value="Not Available" <?php echo ($property['property_status'] == 'Not Available') ? 'selected' : ''; ?>>Not Available</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Months Dropdown (Only for For Rent) -->
+                                    <div class="form-group row" id="monthsField" style="<?php echo ($property['property_status'] == 'For Sale') ? 'display: none;' : 'display: block;'; ?>">
+                                        <label class="control-label col-sm-3">Select Months</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="months">
+                                                <option value="">Select Months</option>
+                                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                                    <option value="<?php echo $i; ?>" <?php echo ($property['months'] == $i) ? 'selected' : ''; ?>>
+                                                        <?php echo $i . ' Month' . ($i > 1 ? 's' : ''); ?>
+                                                    </option>
+                                                <?php endfor; ?>
                                             </select>
                                         </div>
                                     </div>
@@ -248,27 +207,28 @@ if (isset($_POST['submit'])) {
 
                                     <!-- Floor (Only for Commercial Building) -->
                                     <div class="form-group row" id="floorField" style="<?php echo ($property['property_type'] == 'Commercial Building') ? 'display: block;' : 'display: none;'; ?>">
-                                        <label class="control-label col-sm-3">Floor</label>
+                                        <label class="control-label col-sm-3">Floors</label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" name="floor">
-                                                <option value="">Select Floor</option>
-                                                <option value="Ground Floor" <?php echo ($property['floor'] == 'Ground Floor') ? 'selected' : ''; ?>>Ground Floor</option>
-                                                <option value="1st Floor" <?php echo ($property['floor'] == '1st Floor') ? 'selected' : ''; ?>>1st Floor</option>
-                                                <option value="2nd Floor" <?php echo ($property['floor'] == '2nd Floor') ? 'selected' : ''; ?>>2nd Floor</option>
-                                                <option value="3rd Floor" <?php echo ($property['floor'] == '3rd Floor') ? 'selected' : ''; ?>>3rd Floor</option>
-                                                <option value="4th Floor" <?php echo ($property['floor'] == '4th Floor') ? 'selected' : ''; ?>>4th Floor</option>
-                                                <option value="5th Floor" <?php echo ($property['floor'] == '5th Floor') ? 'selected' : ''; ?>>5th Floor</option>
-                                                <option value="6th Floor" <?php echo ($property['floor'] == '6th Floor') ? 'selected' : ''; ?>>6th Floor</option>
-                                                <option value="7th Floor" <?php echo ($property['floor'] == '7th Floor') ? 'selected' : ''; ?>>7th Floor</option>
-                                                <option value="8th Floor" <?php echo ($property['floor'] == '8th Floor') ? 'selected' : ''; ?>>8th Floor</option>
-                                                <option value="9th Floor" <?php echo ($property['floor'] == '9th Floor') ? 'selected' : ''; ?>>9th Floor</option>
-                                                <option value="10th Floor" <?php echo ($property['floor'] == '10th Floor') ? 'selected' : ''; ?>>10th Floor</option>
-                                                <option value="11th Floor" <?php echo ($property['floor'] == '11th Floor') ? 'selected' : ''; ?>>11th Floor</option>
-                                                <option value="12th Floor" <?php echo ($property['floor'] == '12th Floor') ? 'selected' : ''; ?>>12th Floor</option>
-                                                <option value="13th Floor" <?php echo ($property['floor'] == '13th Floor') ? 'selected' : ''; ?>>13th Floor</option>
-                                                <option value="14th Floor" <?php echo ($property['floor'] == '14th Floor') ? 'selected' : ''; ?>>14th Floor</option>
-                                                <option value="15th Floor" <?php echo ($property['floor'] == '15th Floor') ? 'selected' : ''; ?>>15th Floor</option>
-                                            </select>
+                                            <?php 
+                                            $selectedFloors = explode(', ', $property['floor']);
+                                            $allFloors = [
+                                                'Ground Floor', '1st Floor', '2nd Floor', '3rd Floor', 
+                                                '4th Floor', '5th Floor', '6th Floor', '7th Floor',
+                                                '8th Floor', '9th Floor', '10th Floor', '11th Floor',
+                                                '12th Floor', '13th Floor', '14th Floor', '15th Floor'
+                                            ];
+                                            
+                                            foreach ($allFloors as $floorOption): ?>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="floor[]" 
+                                                           value="<?php echo $floorOption; ?>" 
+                                                           id="floor<?php echo str_replace(' ', '', $floorOption); ?>"
+                                                           <?php echo in_array($floorOption, $selectedFloors) ? 'checked' : ''; ?>>
+                                                    <label class="form-check-label" for="floor<?php echo str_replace(' ', '', $floorOption); ?>">
+                                                        <?php echo $floorOption; ?>
+                                                    </label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
 
@@ -276,7 +236,9 @@ if (isset($_POST['submit'])) {
                                     <div class="form-group row">
                                         <label class="control-label col-sm-3">Price</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="price" value="<?php echo htmlspecialchars($property['price']); ?>" required>
+                                            <input type="text" class="form-control" name="price" id="price" 
+                                            value="<?php echo htmlspecialchars($property['price']); ?>" 
+                                            placeholder="Price" required>                                        
                                         </div>
                                     </div>
 
@@ -358,6 +320,7 @@ if (isset($_POST['submit'])) {
                                         <div class="col-sm-9 offset-sm-3">
                                             <button type="submit" name="submit" class="btn btn-info">Update Property</button>
                                             <a href="property_details.php?id=<?php echo htmlspecialchars($id); ?>" class="btn btn-secondary ml-2">Cancel</a>
+                                            <a href="property_images.php?property_id=<?php echo htmlspecialchars($id); ?>" class="btn btn-primary ml-2">Manage Images</a>
                                         </div>
                                     </div>
                                 </form>
@@ -369,14 +332,16 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 
-    <!-- JavaScript to Handle Field Visibility -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const propertyType = document.getElementById('property_type');
+        const propertyStatus = document.getElementById('property_status');
         const bedroomField = document.getElementById('bedroomField');
         const bathroomField = document.getElementById('bathroomField');
         const floorField = document.getElementById('floorField');
+        const monthsField = document.getElementById('monthsField');
 
+        // Handle Property Type Change
         propertyType.addEventListener('change', function() {
             if (this.value === 'Commercial Building') {
                 bedroomField.style.display = 'none';
@@ -389,20 +354,22 @@ if (isset($_POST['submit'])) {
             }
         });
 
-        const imageUpload = document.getElementById('imageUpload');
-        const imagePreview = document.getElementById('imagePreview');
-
-        imageUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.querySelector('img').src = e.target.result;
-                    imagePreview.querySelector('p').textContent = "New image selected.";
-                }
-                reader.readAsDataURL(file);
+        // Handle Property Status Change
+        propertyStatus.addEventListener('change', function() {
+            if (this.value === 'For Sale') {
+                monthsField.style.display = 'none';
+            } else {
+                monthsField.style.display = 'block';
             }
         });
+    });
+    </script>
+    <script>
+    document.getElementById('price').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9\s-]/g, '');
+        if (this.value.includes('-')) {
+            this.value = this.value.replace(/\s*-\s*/, ' - ');
+        }
     });
     </script>
 </body>

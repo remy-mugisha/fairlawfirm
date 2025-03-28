@@ -1,6 +1,5 @@
 <?php
-ob_start(); // Start output buffering
-// session_start();
+ob_start();
 require_once 'include/header.php';
 require_once 'propertyMgt/config.php';
 
@@ -10,7 +9,16 @@ if (isset($_POST['submit'])) {
     $title = $_POST['title'];
     $property_status = $_POST['property_status'];
     $property_type = $_POST['property_type'];
-    $price = preg_replace('/[^0-9.]/', '', $_POST['price']);
+    // Replace the price processing with:
+    $price = trim($_POST['price']);
+
+    // Clean the price while preserving range format
+    if (preg_match('/(\d+)\s*(?:-|up to)\s*(\d+)/i', $price, $matches)) {
+        $price = $matches[1] . ' - ' . $matches[2];
+    } else {
+        // If single price, just clean it
+        $price = preg_replace('/[^0-9]/', '', $price);
+    }
     $property_size = $_POST['property_size'];
     $bedroom = ($property_type === 'Commercial Building') ? 0 : $_POST['bedroom'];
     $bathroom = ($property_type === 'Commercial Building') ? 0 : $_POST['bathroom'];
@@ -18,48 +26,14 @@ if (isset($_POST['submit'])) {
     $sector = $_POST['sector'];
     $district = $_POST['district'];
     $country = $_POST['country'];
-    $floor = ($property_type === 'Commercial Building') ? $_POST['floor'] : null;
-    $months = ($property_status === 'For Sale') ? null : $_POST['months']; // Handle months selection
+    $floor = ($property_type === 'Commercial Building') ? implode(', ', $_POST['floor']) : null;
+    $months = ($property_status === 'For Sale') ? null : $_POST['months'];
 
-    // Handle image upload
-    $image = '';
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $allowed = array('jpg', 'jpeg', 'png', 'gif');
-        $filename = $_FILES['image']['name'];
-        $filetype = pathinfo($filename, PATHINFO_EXTENSION);
-
-        if (in_array(strtolower($filetype), $allowed)) {
-            $new_filename = uniqid() . '.' . $filetype;
-            $upload_dir = 'propertyMgt/propertyImg/';
-
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $new_filename)) {
-                $image = $new_filename;
-            } else {
-                $_SESSION['error_message'] = "Failed to upload image.";
-                header("Location: add_rental_property.php");
-                exit();
-            }
-        } else {
-            $_SESSION['error_message'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
-            header("Location: add_rental_property.php");
-            exit();
-        }
-    } else {
-        $_SESSION['error_message'] = "Please select an image.";
-        header("Location: add_rental_property.php");
-        exit();
-    }
-
-    // Insert data into the database
-    $query = "INSERT INTO properties (image, title, description, property_status, property_type, price, property_size, bedroom, bathroom, street, sector, district, country, floor, months) 
-              VALUES (:image, :title, :description, :property_status, :property_type, :price, :property_size, :bedroom, :bathroom, :street, :sector, :district, :country, :floor, :months)";
+    // Insert data into the database (removed image field)
+    $query = "INSERT INTO properties (title, description, property_status, property_type, price, property_size, bedroom, bathroom, street, sector, district, country, floor, months) 
+              VALUES (:title, :description, :property_status, :property_type, :price, :property_size, :bedroom, :bathroom, :street, :sector, :district, :country, :floor, :months)";
 
     $stmt = $conn->prepare($query);
-    $stmt->bindParam(':image', $image);
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':property_status', $property_status);
@@ -76,8 +50,8 @@ if (isset($_POST['submit'])) {
     $stmt->bindParam(':months', $months);
 
     if ($stmt->execute()) {
-        $_SESSION['success_message'] = "Property added successfully!";
-        header("Location: add_rental_property.php");
+        $_SESSION['success_message'] = "Property added successfully! You can now upload images for this property.";
+        header("Location: property_images.php?property_id=" . $conn->lastInsertId());
         exit();
     } else {
         $_SESSION['error_message'] = "Error adding property: " . $stmt->errorInfo()[2];
@@ -95,11 +69,9 @@ if (isset($_POST['submit'])) {
     <title>Add Rental Property</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .custom-file-label::after { content: "Browse"; }
         .form-group { margin-bottom: 1.5rem; }
         .control-label { font-weight: 500; padding-top: 7px; }
         .padding_infor_info { padding: 30px; }
-        #imagePreview img { border: 1px solid #ddd; border-radius: 4px; padding: 5px; }
     </style>
 </head>
 <body>
@@ -113,7 +85,6 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
 
-                <!-- Success/Error Messages -->
                 <?php if (isset($_SESSION['success_message'])): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
@@ -132,26 +103,11 @@ if (isset($_POST['submit'])) {
                     </div>
                 <?php endif; ?>
 
-                <!-- Form -->
                 <div class="full progress_bar_inner">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="full padding_infor_info">
-                                <form class="form-horizontal" action="add_rental_property.php" method="post" enctype="multipart/form-data">
-                                    <!-- Image Upload -->
-                                    <div class="form-group row">
-                                        <label class="control-label col-sm-3">Upload Image</label>
-                                        <div class="col-sm-9">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="image" id="imageUpload" accept="image/*" required>
-                                                <label class="custom-file-label" for="imageUpload">Choose file</label>
-                                            </div>
-                                            <div class="mt-3" id="imagePreview" style="display: none;">
-                                                <img src="" alt="Preview" class="img-fluid" style="max-height: 200px;">
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <form class="form-horizontal" action="add_rental_property.php" method="post">
                                     <!-- Title -->
                                     <div class="form-group row">
                                         <label class="control-label col-sm-3">Title</label>
@@ -218,27 +174,72 @@ if (isset($_POST['submit'])) {
 
                                     <!-- Floor (Only for Commercial Building) -->
                                     <div class="form-group row" id="floorField" style="display: none;">
-                                        <label class="control-label col-sm-3">Floor</label>
+                                        <label class="control-label col-sm-3">Floors</label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" name="floor">
-                                                <option value="">Select Floor</option>
-                                                <option value="Ground Floor">Ground Floor</option>
-                                                <option value="1st Floor">1st Floor</option>
-                                                <option value="2nd Floor">2nd Floor</option>
-                                                <option value="3rd Floor">3rd Floor</option>
-                                                <option value="4th Floor">4th Floor</option>
-                                                <option value="5th Floor">5th Floor</option>
-                                                <option value="6th Floor">6th Floor</option>
-                                                <option value="7th Floor">7th Floor</option>
-                                                <option value="8th Floor">8th Floor</option>
-                                                <option value="9th Floor">9th Floor</option>
-                                                <option value="10th Floor">10th Floor</option>
-                                                <option value="11th Floor">11th Floor</option>
-                                                <option value="12th Floor">12th Floor</option>
-                                                <option value="13th Floor">13th Floor</option>
-                                                <option value="14th Floor">14th Floor</option>
-                                                <option value="15th Floor">15th Floor</option>
-                                            </select>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="Ground Floor" id="groundFloor">
+                                                <label class="form-check-label" for="groundFloor">Ground Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="1st Floor" id="firstFloor">
+                                                <label class="form-check-label" for="firstFloor">1st Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="2nd Floor" id="secondFloor">
+                                                <label class="form-check-label" for="secondFloor">2nd Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="3rd Floor" id="thirdFloor">
+                                                <label class="form-check-label" for="thirdFloor">3rd Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="4th Floor" id="fourthFloor">
+                                                <label class="form-check-label" for="fourthFloor">4th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="5th Floor" id="fifthFloor">
+                                                <label class="form-check-label" for="fifthFloor">5th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="6th Floor" id="sixthFloor">
+                                                <label class="form-check-label" for="sixthFloor">6th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="7th Floor" id="seventhFloor">
+                                                <label class="form-check-label" for="seventhFloor">7th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="8th Floor" id="eighthFloor">
+                                                <label class="form-check-label" for="eighthFloor">8th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="9th Floor" id="ninthFloor">
+                                                <label class="form-check-label" for="ninthFloor">9th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="10th Floor" id="tenthFloor">
+                                                <label class="form-check-label" for="tenthFloor">10th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="11th Floor" id="eleventhFloor">
+                                                <label class="form-check-label" for="eleventhFloor">11th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="12th Floor" id="twelfthFloor">
+                                                <label class="form-check-label" for="twelfthFloor">12th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="13th Floor" id="thirteenthFloor">
+                                                <label class="form-check-label" for="thirteenthFloor">13th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="14th Floor" id="fourteenthFloor">
+                                                <label class="form-check-label" for="fourteenthFloor">14th Floor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="floor[]" value="15th Floor" id="fifteenthFloor">
+                                                <label class="form-check-label" for="fifteenthFloor">15th Floor</label>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -246,7 +247,8 @@ if (isset($_POST['submit'])) {
                                     <div class="form-group row">
                                         <label class="control-label col-sm-3">Price</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="price" placeholder="Enter price" required>
+                                            <input type="text" class="form-control" name="price" id="price" 
+                                            placeholder="Price" required>                                        
                                         </div>
                                     </div>
 
@@ -326,7 +328,6 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 
-    <!-- JavaScript to Handle Field Visibility -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const propertyType = document.getElementById('property_type');
@@ -357,22 +358,14 @@ if (isset($_POST['submit'])) {
                 monthsField.style.display = 'block';
             }
         });
-
-        // Handle Image Preview
-        const imageUpload = document.getElementById('imageUpload');
-        const imagePreview = document.getElementById('imagePreview');
-
-        imageUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.style.display = 'block';
-                    imagePreview.querySelector('img').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
+    });
+    </script>
+    <script>
+    document.getElementById('price').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9\s-]/g, '');
+        if (this.value.includes('-')) {
+            this.value = this.value.replace(/\s*-\s*/, ' - ');
+        }
     });
     </script>
 </body>

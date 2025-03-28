@@ -8,7 +8,7 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
     
     try {
-        // Fetch the blog image path before deletion
+        // Fetch the blog data before deletion
         $check_query = "SELECT image FROM blog WHERE id = :id";
         $check_stmt = $conn->prepare($check_query);
         $check_stmt->bindParam(':id', $delete_id, PDO::PARAM_INT);
@@ -16,7 +16,21 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
         $blog = $check_stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($blog) {
-            // Delete the blog from the database
+            // First delete all attachments
+            $query = "SELECT file_path FROM blog_attachments WHERE blog_id = :blog_id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':blog_id', $delete_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $attachments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach ($attachments as $attachment) {
+                $file_path = 'propertyMgt/blogFiles/' . $attachment['file_path'];
+                if (file_exists($file_path)) {
+                    unlink($file_path);
+                }
+            }
+            
+            // Then delete the blog post
             $delete_query = "DELETE FROM blog WHERE id = :id";
             $delete_stmt = $conn->prepare($delete_query);
             $delete_stmt->bindParam(':id', $delete_id, PDO::PARAM_INT);
@@ -30,7 +44,7 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
                     }
                 }
                 
-                $_SESSION['success_message'] = "Blog deleted successfully!";
+                $_SESSION['success_message'] = "Blog and all associated files deleted successfully!";
             } else {
                 $_SESSION['error_message'] = "Failed to delete blog.";
             }
@@ -58,37 +72,21 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Blogs</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-       
-.table .thead-dark th {
-    color: #fff;
-    background-color: #15283c;
-    border-color: #32383e;
-}
-
-        .table-responsive {
-            overflow-x: auto;
+        .table .thead-dark th {
+            color: #fff;
+            background-color: #15283c;
+            border-color: #32383e;
         }
-        .table thead th {
-            background-color: #343a40;
-            color: white;
-        }
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        .badge {
-            font-size: 14px;
-            padding: 6px 12px;
-        }
-        .badge-success {
-            background-color: #28a745;
-        }
-        .badge-warning {
-            background-color: #ffc107;
-        }
-        .badge-secondary {
-            background-color: #6c757d;
-        }
+        .table-responsive { overflow-x: auto; }
+        .table tbody tr:hover { background-color: #f8f9fa; }
+        .badge { font-size: 14px; padding: 6px 12px; }
+        .badge-success { background-color: #28a745; }
+        .badge-warning { background-color: #ffc107; }
+        .badge-secondary { background-color: #6c757d; }
+        .badge-info { background-color: #17a2b8; }
+        .action-btns a { margin-right: 5px; }
     </style>
 </head>
 <body>
@@ -102,13 +100,9 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-                <!-- Success/Error Messages -->
                 <?php if (isset($_SESSION['success_message'])): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <?php 
-                        echo $_SESSION['success_message']; 
-                        unset($_SESSION['success_message']);
-                        ?>
+                        <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -117,10 +111,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <?php if (isset($_SESSION['error_message'])): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?php 
-                        echo $_SESSION['error_message']; 
-                        unset($_SESSION['error_message']);
-                        ?>
+                        <?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -138,6 +129,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <th>Image</th>
                                                 <th>Title</th>
                                                 <th>Category</th>
+                                                <th>Attachments</th>
                                                 <th>Status</th>
                                                 <th>Date</th>
                                                 <th>Actions</th>
@@ -153,20 +145,32 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td><?php echo htmlspecialchars($row['title']); ?></td>
                                                         <td><?php echo htmlspecialchars($row['category_blog']); ?></td>
                                                         <td>
+                                                            <?php 
+                                                            $query = "SELECT COUNT(*) as count FROM blog_attachments WHERE blog_id = :blog_id";
+                                                            $stmt = $conn->prepare($query);
+                                                            $stmt->bindParam(':blog_id', $row['id'], PDO::PARAM_INT);
+                                                            $stmt->execute();
+                                                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                            echo $result['count'] > 0 ? 
+                                                                '<span class="badge badge-info">' . $result['count'] . '</span>' : 
+                                                                '<span class="badge badge-secondary">0</span>';
+                                                            ?>
+                                                        </td>
+                                                        <td>
                                                             <span class="badge <?php echo ($row['status'] == 'active') ? 'badge-success' : 'badge-warning'; ?>">
                                                                 <?php echo htmlspecialchars($row['status']); ?>
                                                             </span>
                                                         </td>
                                                         <td><?php echo htmlspecialchars($row['date']); ?></td>
-                                                        <td>
-                                                            <a href="view_blog.php?id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm" title="View Details">
+                                                        <td class="action-btns">
+                                                            <a href="view_blog.php?id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm" title="View">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                             <a href="edit_blog.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm" title="Edit">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
                                                             <a href="display_blog.php?delete_id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" 
-                                                               onclick="return confirm('Are you sure you want to delete this blog?')" title="Delete">
+                                                               onclick="return confirm('Are you sure you want to delete this blog and all its attachments?')" title="Delete">
                                                                 <i class="fa fa-trash"></i>
                                                             </a>
                                                         </td>
@@ -174,7 +178,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <?php endforeach; ?>
                                             <?php else: ?>
                                                 <tr>
-                                                    <td colspan="6" class="text-center">No blogs found</td>
+                                                    <td colspan="7" class="text-center">No blogs found</td>
                                                 </tr>
                                             <?php endif; ?>
                                         </tbody>
@@ -188,7 +192,6 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

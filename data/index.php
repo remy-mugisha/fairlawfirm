@@ -8,46 +8,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     try {
-        $stmt = $conn->prepare("SELECT l.*, u.first_name, u.last_name, u.profile_image, u.status 
-                               FROM login l
-                               LEFT JOIN users u ON l.email = u.email
-                               WHERE l.email = :email");
+        // Check if user exists in 'users' table
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->bindParam(':email', $email);
-        
         $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user_exists = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            if (isset($user['status']) && $user['status'] !== 'Active') {
-                $error_message = "Your account is not active yet. Please contact the administrator.";
-            } 
-            else if (password_verify($password, $user['password'])) {
-                $_SESSION['user_type'] = $user['usertype'];
-                $_SESSION['email'] = $user['email'];
-                
-                if (isset($user['first_name'])) {
-                    $_SESSION['first_name'] = $user['first_name'];
-                    $_SESSION['last_name'] = $user['last_name'];
-                    $_SESSION['profile_image'] = $user['profile_image'];
-                }
+        if (!$user_exists) {
+            $error_message = "Your account has been deleted. Please contact support.";
+        } else {
+            // Fetch login details
+            $stmt = $conn->prepare("SELECT l.*, u.first_name, u.last_name, u.profile_image, u.status 
+                                    FROM login l
+                                    LEFT JOIN users u ON l.email = u.email
+                                    WHERE l.email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($user['usertype'] == 'admin') {
+            if ($user) {
+                if ($user['status'] !== 'Active') {
+                    $error_message = "Your account is not active yet. Please contact the administrator.";
+                } elseif (password_verify($password, $user['password'])) {
+                    $_SESSION['user_type'] = $user['usertype'];
+                    $_SESSION['email'] = $user['email'];
+                    
+                    if (isset($user['first_name'])) {
+                        $_SESSION['first_name'] = $user['first_name'];
+                        $_SESSION['last_name'] = $user['last_name'];
+                        $_SESSION['profile_image'] = $user['profile_image'];
+                    }
+
                     header("Location: dashboard.php");
                     exit();
-                } elseif ($user['usertype'] == 'user') {
-                    header("Location: dashboard.php");
-                    exit();
+                } else {
+                    $error_message = "Invalid email or password";
                 }
             } else {
-                $error_message = "Invalid email or password";
+                $error_message = "User not found";
             }
-        } else {
-            $error_message = "User not found";
         }
     } catch (PDOException $e) {
         $error_message = "Database error: " . $e->getMessage();
     }
 }
+
 ?>
 
 <!DOCTYPE html>
