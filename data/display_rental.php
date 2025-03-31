@@ -144,8 +144,10 @@ function formatDisplayPrice($price) {
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                         <a href="property_images.php?property_id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm" title="Manage Images">
-                                                            <i class="fa fa-gallery"></i>images 
+                                                            <i class="fa fa-image"></i> 
                                                         </a>
+
+
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

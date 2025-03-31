@@ -25,7 +25,8 @@ try {
 </head>
 <body>
     <section class="page-header">
-        <div class="page-header__bg" style="background-color: #1a2f24"></div>
+        <!-- <div class="page-header__bg" style="background-color: #1a2f24,"></div> -->
+        <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/background5k.jpg);"></div>
         <div class="container">
             <h2 class="page-header__title"><?= __('About Fair Law Firm LTD') ?></h2>
             <ul class="firdip-breadcrumb list-unstyled">
@@ -50,7 +51,7 @@ try {
                         <div class="about-two__thumb">
                             <div class="about-two__thumb__item about-two__thumb__item--one wow fadeInRight" data-wow-duration='1500ms' data-wow-delay='300ms'>
                                 <?php if ($aboutContent && !empty($aboutContent['image'])): ?>
-                                    <img src="data/propertyMgt/aboutImg/<?php echo htmlspecialchars($aboutContent['image']); ?>" alt="About Image" height="500px" width="500px">
+                                    <img src="data/propertyMgt/aboutImg/<?php echo htmlspecialchars($aboutContent['image']); ?>" alt="About Image" height="400px" width="450px">
                                 <?php else: ?>
                                     <img src="assets/images/about/nyirabyo-1-1.png" alt="firdip">
                                 <?php endif; ?>

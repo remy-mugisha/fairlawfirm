@@ -91,7 +91,6 @@ foreach ($property_images as $image) {
             <h2 class="page-header__title"><?= htmlspecialchars($property['title']) ?></h2>
             <ul class="firdip-breadcrumb list-unstyled">
                 <li><a href="welcome">Home</a></li>
-                <li><a href="property.php">Properties</a></li>
                 <li><span>Details</span></li>
             </ul>
         </div>
@@ -113,7 +112,6 @@ foreach ($property_images as $image) {
                                 </div>
                             <?php endif; ?>
                         </div>
-
                         <div class="blog-card-two__content">
                             <h3 class="blog-card-two__title">Description</h3>
                             <p class="blog-card__two__text"><?= nl2br(htmlspecialchars($property['description'])) ?></p>

@@ -21,8 +21,8 @@
 
     <div class="page-wrapper">
         <section class="page-header">
-            <div class="page-header__bg" style="background-color: #1a2f24"></div>
-            <!-- <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/background1-1.jpg);"></div> -->
+            <!-- <div class="page-header__bg" style="background-color: #1a2f24"></div> -->
+            <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/wallpaper.jpg);"></div>
             <div class="container">
                 <h2 class="page-header__title"><?= __('Legal Services')?></h2>
                 <ul class="firdip-breadcrumb list-unstyled">
@@ -77,6 +77,7 @@
                             <p class="feature-one__item__text"><?= __('We facilitate buyer and seller in movable immovable sales transactions; in winding up and dissolution of the company.')?></p>
                         </div>
                     </div>
+                    
                     <div class="col-lg-4 col-md-4">
                         <div class="feature-one__item wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
                             <div class="feature-one__item__icon">
@@ -85,6 +86,7 @@
                             <p class="feature-one__item__text"><?= __('In this world governed by intricate laws and regulations, professional legal advice serves as a guiding light, protecting individual rights, resolving disputes and so on. We provide advice in civil and business field.')?></p>
                         </div>
                     </div>
+                    
                     <div class="col-lg-4 col-md-4">
                         <div class="feature-one__item wow fadeInUp" data-wow-duration='1500ms' data-wow-delay='300ms'>
                             <div class="feature-one__item__icon">

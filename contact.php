@@ -17,8 +17,8 @@
 <body>
     
         <section class="page-header">
-        <div class="page-header__bg" style="background-color: #1a2f24"></div>
-            <!-- <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/background1-1.jpg);"></div> -->
+        <!-- <div class="page-header__bg" style="background-color: #1a2f24"></div> -->
+            <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/wallpaper2.jpg);"></div>
             <div class="container">
                 <h2 class="page-header__title"><?= __('Contact')?></h2>
                 <ul class="firdip-breadcrumb list-unstyled">
@@ -61,7 +61,7 @@
                                         <li class="sidebar__comments__item">
                                             <div class="sidebar__comments__icon"> <i class="icon-pin2"></i> </div>
                                             <h6 class="sidebar__comments__title">
-                                            <p class="footer-widget__contact__text">KG 194 St, Kigali <br> Kimironko Near bpr Branch</p>
+                                            <p class="footer-widget__contact__text" style="color: #15283c;">KG 194 St, Kigali <br> Kimironko Near bpr Branch</p>
                                             </h6>
                                         </li>
                                     </ul>

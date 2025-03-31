@@ -21,8 +21,8 @@
 
     <div class="page-wrapper">
         <section class="page-header">
-        <div class="page-header__bg" style="background-color: #1a2f24"></div>
-            <!-- <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/background1-1.jpg);"></div> -->
+        <!-- <div class="page-header__bg" style="background-color: #1a2f24"></div> -->
+            <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/background1-1.jpg);"></div>
             <div class="container">
                 <h2 class="page-header__title"><?= __('Property Management Services')?></h2>
                 <ul class="firdip-breadcrumb list-unstyled">

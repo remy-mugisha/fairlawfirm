@@ -149,8 +149,8 @@ if (isset($_GET['property_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Images Management</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
     <style>
         .image-thumbnail {
             width: 150px;
@@ -256,7 +256,7 @@ if (isset($_GET['property_id'])) {
                                             </select>
                                         </div>
                                         <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-primary">Load Images</button>
+                                            <button type="submit" class="btn btn-info">Load Images</button>
                                         </div>
                                     </div>
                                 </form>
@@ -281,7 +281,7 @@ if (isset($_GET['property_id'])) {
                                         
                                         <div class="form-group">
                                             <button type="submit" name="submit" class="btn btn-success">
-                                                <i class="fas fa-upload"></i> Upload Images
+                                                <i class="fa fa-upload"></i> Upload Images
                                             </button>
                                         </div>
                                     </form>
@@ -303,7 +303,7 @@ if (isset($_GET['property_id'])) {
                                                             <?php if (!$image['is_featured']): ?>
                                                                 <a href="property_images.php?set_featured=<?php echo $image['id']; ?>&property_id=<?php echo $current_property['id']; ?>" 
                                                                    class="btn btn-sm btn-info" title="Set as Featured">
-                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
                                                                 </a>
                                                             <?php endif; ?>
                                                             
@@ -311,7 +311,7 @@ if (isset($_GET['property_id'])) {
                                                                class="btn btn-sm btn-danger" 
                                                                onclick="return confirm('Are you sure you want to delete this image?')" 
                                                                title="Delete">
-                                                                <i class="fas fa-trash"></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </a>
                                                         </div>
                                                     </div>

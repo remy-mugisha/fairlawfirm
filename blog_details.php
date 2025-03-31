@@ -158,36 +158,9 @@
                                              class="main-blog-image">
                                     </div>
                                     
-                                    <!-- Floating Images -->
-                                    <div class="clearfix">
-                                        <img src="data/propertyMgt/blogImg/67e52f29b7463.jpg" 
-                                             class="float-image float-start" 
-                                             alt="Related content 1">
-                                             
-                                        <img src="data/propertyMgt/blogImg/67e52f29b7463.jpg" 
-                                             class="float-image float-end" 
-                                             alt="Related content 2">
-                                    </div>
-                                    
                                     <!-- Blog Content -->
                                     <div class="blog-card-two__content">
                                         <p class="blog-card__two__text"><?php echo nl2br(htmlspecialchars($blog['blog_description_details'])); ?></p>
-                                    </div>
-                                    
-                                    <!-- Thumbnail Gallery -->
-                                    <div class="image-gallery">
-                                        <img src="data/propertyMgt/blogImg/67e52f29b7463.jpg" 
-                                             class="img-thumbnail" 
-                                             alt="Gallery image 1">
-                                        <img src="data/propertyMgt/blogImg/67e52f29b7463.jpg" 
-                                             class="img-thumbnail" 
-                                             alt="Gallery image 2">
-                                        <img src="data/propertyMgt/blogImg/67e52f29b7463.jpg" 
-                                             class="img-thumbnail" 
-                                             alt="Gallery image 3">
-                                        <img src="data/propertyMgt/blogImg/67e52f29b7463.jpg" 
-                                             class="img-thumbnail" 
-                                             alt="Gallery image 4">
                                     </div>
                                     
                                     <?php if (!empty($attachments)): ?>
@@ -204,10 +177,10 @@
                                                             <small class="text-muted ml-2">(<?php echo formatFileSize($attachment['file_size']); ?>)</small>
                                                         </div>
                                                         <a href="data/propertyMgt/blogFiles/<?php echo htmlspecialchars($attachment['file_path']); ?>" 
-                                                           class="btn btn-sm btn-primary" 
+                                                           class="btn btn-sm btn-success" 
                                                            download
                                                            title="Download <?php echo htmlspecialchars($attachment['file_name']); ?>">
-                                                            <i class="fas fa-download"></i> Download
+                                                            <i class="fas fa-download"></i> 
                                                         </a>
                                                     </div>
                                                 </div>

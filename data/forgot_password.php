@@ -85,10 +85,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         .login-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+        }
+        
+        .logo-container {
+            margin-bottom: 30px;
+            text-align: center;
         }
         
         .login-card {
@@ -98,16 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             max-width: 450px;
             padding: 30px;
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .login-header h2 {
-            color: var(--primary-color);
-            font-weight: 700;
         }
         
         .form-control {
@@ -138,22 +134,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transform: translateY(-2px);
         }
         
-        .form-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-        }
-        
-        .remember-me input {
-            margin-right: 5px;
-        }
-        
         .forgot-password {
             color: var(--secondary-color);
             text-decoration: none;
@@ -174,33 +154,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-align: center;
         }
         
-        /* Responsive adjustments */
         @media (max-width: 576px) {
             .login-card {
                 padding: 20px;
-            }
-            
-            .form-footer {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .forgot-password {
-                margin-top: 10px;
             }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
+        <!-- Logo positioned above the login card -->
+        <div class="logo-container">
+            <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="Fair Law Firm Logo" height="60" width="200">
+        </div>
+        
         <div class="login-card">
-            <div class="login-header">
-                <!-- <a href="welcome"> -->
-                    <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="firdip HTML" height="60" width="200">
-                <!-- </a> -->
-                <!-- <h2>Fair Law Firm</h2> -->
-            </div>
-            
             <?php if (!empty($error_message)) : ?>
                 <div class="alert alert-danger">
                     <?php echo htmlspecialchars($error_message); ?>

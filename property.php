@@ -116,7 +116,7 @@ $totalPages = ceil($totalProperties / $propertiesPerPage);
         
         .property-title {
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 500;
             margin-bottom: 10px;
             color: var(--dark);
         }
@@ -124,15 +124,17 @@ $totalPages = ceil($totalProperties / $propertiesPerPage);
         .property-price {
             color: var(--primary);
             font-size: 1.2rem;
-            font-weight: 700;
+            font-weight: 400;
+            font-size: 15px;
             margin-bottom: 10px;
         }
         
         .property-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
+            font-size: 15px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
         
         .meta-item {
@@ -152,8 +154,9 @@ $totalPages = ceil($totalProperties / $propertiesPerPage);
             color: white;
             padding: 8px 20px;
             border-radius: 30px;
+            font-size: 12px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 400;
             transition: background 0.3s;
         }
         
@@ -208,7 +211,8 @@ $totalPages = ceil($totalProperties / $propertiesPerPage);
 <body>
 
     <section class="page-header">
-        <div class="page-header__bg" style="background-color: #1a2f24"></div>
+        <!-- <div class="page-header__bg" style="background-color: #1a2f24"></div> -->
+        <div class="page-header__bg" style="background-image: url(assets/images/backgrounds/background1-1.jpg);"></div>
         <div class="container">
             <h2 class="page-header__title">REAL ESTATE PROPERTIES</h2>
             <ul class="firdip-breadcrumb list-unstyled">

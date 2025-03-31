@@ -52,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_message = "Database error: " . $e->getMessage();
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -64,8 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
         :root {
-            --primary-color:rgb(247, 247, 247);
-            /* --primary-color: #2c3e50; */
+            --primary-color: #f7f7f7;
             --secondary-color: #3498db;
             --light-color: #ecf0f1;
         }
@@ -73,33 +71,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         body {
             background-color: var(--primary-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            margin: 0;
             padding: 20px;
+        }
+        
+        .login-wrapper {
+            width: 100%;
+            max-width: 450px;
+            /* text-align: center; */
+        }
+        
+        .logo-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
         }
         
         .login-card {
             background: white;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 450px;
             padding: 30px;
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .login-header h2 {
-            color: var(--primary-color);
-            font-weight: 700;
+            width: 100%;
         }
         
         .form-control {
@@ -107,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 5px;
             border: 1px solid #ddd;
             padding-left: 15px;
+            margin-bottom: 15px;
         }
         
         .form-control:focus {
@@ -123,6 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 5px;
             font-weight: 600;
             transition: all 0.3s;
+            margin-top: 10px;
         }
         
         .btn-login:hover {
@@ -160,7 +163,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 20px;
         }
         
-        /* Responsive adjustments */
         @media (max-width: 576px) {
             .login-card {
                 padding: 20px;
@@ -174,19 +176,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             .forgot-password {
                 margin-top: 10px;
             }
+            
+            .logo-container {
+                margin-bottom: 20px;
+            }
+            
+            .logo-container img {
+                max-width: 180px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-wrapper">
+        <div class="logo-container">
+            <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="Fair Law Firm Logo">
+        </div>
+        
         <div class="login-card">
-            <div class="login-header">
-                <!-- <a href="#"> -->
-                    <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="firdip HTML" height="60" width="200">
-                <!-- </a> -->
-                <!-- <h2>Fair Law Firm</h2> -->
-            </div>
-            
             <?php if (!empty($error_message)) : ?>
                 <div class="alert alert-danger">
                     <?php echo htmlspecialchars($error_message); ?>
@@ -221,7 +228,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <a href="forgot_password.php" class="forgot-password">Forgot password?</a>
                 </div>
                 
-                <button type="submit" class="btn btn-login mt-3">Login</button>
+                <button type="submit" class="btn btn-login">Login</button>
             </form>
         </div>
     </div>

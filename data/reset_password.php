@@ -111,33 +111,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token'])) {
         body {
             background-color: var(--primary-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        .auth-wrapper {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
             padding: 20px;
         }
         
-        .login-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 450px;
-            padding: 30px;
-        }
-        
-        .login-header {
+        .auth-logo {
             text-align: center;
             margin-bottom: 30px;
         }
         
-        .login-header h2 {
-            color: var(--primary-color);
-            font-weight: 700;
+        .auth-logo img {
+            height: 60px;
+            width: auto;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+        }
+        
+        .auth-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-weight: 600;
         }
         
         .form-control {
@@ -145,6 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token'])) {
             border-radius: 5px;
             border: 1px solid #ddd;
             padding-left: 15px;
+            margin-bottom: 15px;
         }
         
         .form-control:focus {
@@ -152,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token'])) {
             box-shadow: none;
         }
         
-        .btn-login {
+        .btn-primary {
             background-color: var(--secondary-color);
             border: none;
             color: white;
@@ -163,24 +173,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token'])) {
             transition: all 0.3s;
         }
         
-        .btn-login:hover {
+        .btn-primary:hover {
             background-color: #2980b9;
             transform: translateY(-2px);
         }
         
-        .form-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
         }
         
-        .forgot-password {
+        .auth-link {
             color: var(--secondary-color);
             text-decoration: none;
         }
         
-        .forgot-password:hover {
+        .auth-link:hover {
             text-decoration: underline;
         }
         
@@ -189,30 +197,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token'])) {
             margin-bottom: 20px;
         }
         
-        .info-text {
-            margin-bottom: 20px;
-            color: #666;
-            text-align: center;
-        }
-        
-        /* Responsive adjustments */
         @media (max-width: 576px) {
-            .login-card {
+            .auth-wrapper {
+                padding: 15px;
+            }
+            
+            .auth-card {
                 padding: 20px;
+            }
+            
+            .auth-logo img {
+                height: 50px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <!-- <a href="welcome"> -->
-                    <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="firdip HTML" height="60" width="200">
-                <!-- </a> -->
-                <!-- <h2>Fair Law Firm</h2> -->
-            </div>
-            
+    <div class="auth-wrapper">
+        <div class="auth-logo">
+            <img src="propertyMgt/logoImg/logo-0-0-0.png" alt="Fair Law Firm">
+        </div>
+        
+        <div class="auth-card">
             <?php if (!empty($error_message)) : ?>
                 <div class="alert alert-danger">
                     <?php echo htmlspecialchars($error_message); ?>
@@ -220,39 +226,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token'])) {
             <?php endif; ?>
             
             <?php if ($valid_token) : ?>
-                <!-- <h3 class="text-center">Reset Password</h3> -->
-                <!-- <p class="info-text">Enter your new password below.</p> -->
+                <!-- <h3 class="auth-title">Reset Your Password</h3> -->
                 
                 <form method="POST" action="">
                     <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
                     
                     <div class="form-group">
                         <label for="new_password">New Password</label>
-                        <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required minlength="8">
+                        <input type="password" class="form-control" id="new_password" name="new_password" 
+                               placeholder="Enter new password" required minlength="8">
                     </div>
                     
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password" required minlength="8">
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" 
+                               placeholder="Confirm new password" required minlength="8">
                     </div>
                     
-                    <button type="submit" class="btn btn-login mt-3">Reset Password</button>
-                    
-                    <div class="text-center mt-3">
-                        <a href="index" class="forgot-password">Back to Login</a>
-                    </div>
+                    <button type="submit" class="btn btn-primary">Reset Password</button>
                 </form>
             <?php else : ?>
                 <div class="alert alert-danger">
                     Invalid or expired password reset link. Please request a new password reset.
                 </div>
                 
-                <a href="forgot_password.php" class="btn btn-login">Request New Reset Link</a>
-                
-                <div class="text-center mt-3">
-                    <a href="index" class="forgot-password">Back to Login</a>
-                </div>
+                <a href="forgot_password.php" class="btn btn-primary">Request New Reset Link</a>
             <?php endif; ?>
+            
+            <div class="auth-footer">
+                <a href="index" class="auth-link">Back to Login</a>
+            </div>
         </div>
     </div>
     

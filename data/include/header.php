@@ -91,16 +91,10 @@ if(!isset($_SESSION["email"])){
                      </li>
                      <li><a href="display_blog"><i class="fa fa-newspaper-o "></i> <span> Blog</span></a></li>
                      <li><a href="display_about"><i class="fa fa-info-circle"></i> <span> About</span></a></li>
-                     <li><a href="add_video.php"><i class="fa fa-play-circle " ></i> <span> Videos</span></a></li>
+                     <!-- <li><a href="add_video.php"><i class="fa fa-play-circle " ></i> <span> Videos</span></a></li> -->
                      <li class="active">
-                        <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-table"></i> <span>Show Tables</span></a>
+                        <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-image"></i> <span>Images</span></a>
                         <ul class="collapse list-unstyled" id="additional_page">
-                           <li>
-                              <a href="display_properties">> <span>Manage Properties</span></a>
-                           </li>
-                           <li>
-                              <a href="display_rental">> <span>Rental House</span></a>
-                           </li>
                            <li>
                               <a href="property_images">> <span>Property images</span></a>
                            </li>
@@ -112,7 +106,7 @@ if(!isset($_SESSION["email"])){
                      <?php if ($_SESSION['user_type'] == 'admin'): ?>
                             <li><a href="manage_users.php"><i class="fa fa-users "></i> <span>Manage Users</span></a></li>
                      <?php endif; ?>
-                     <li><a href="#"><i class="fa fa-cog "></i> <span>Settings</span></a></li>
+                     <li><a href="fhtebd"><i class="fa fa-cog "></i> <span>Settings</span></a></li>
                      <!-- <li><a href="logout.php"><i class=""></i> <span>Logout</span></a></li> -->
                   </ul>
                </div>
